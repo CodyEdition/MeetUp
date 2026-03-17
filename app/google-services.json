@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "TODO: Project-Number",
+    "project_id": "TODO: Project-ID",
+    "storage_bucket": "TODO: Project-ID.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:000000000000:android:0000000000000000000000",
+        "android_client_info": {
+          "package_name": "com.meetup"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "TODO: API-Key"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
