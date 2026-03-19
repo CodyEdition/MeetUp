@@ -6,4 +6,15 @@
     </style>
 
     <style name="Theme.MeetUp" parent="Base.Theme.MeetUp" />
+    <style name="Theme.MeetUp.Auth" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/background_dark</item>
+        <item name="android:statusBarColor">@color/background_dark</item>
+        <item name="android:navigationBarColor">@color/background_dark</item>
+        <item name="colorPrimary">@color/accent_orange</item>
+        <item name="colorOnPrimary">@color/text_on_accent</item>
+        <item name="colorSurface">@color/background_dark</item>
+        <item name="colorOnSurface">@color/text_on_dark</item>
+        <item name="colorOnSurfaceVariant">@color/accent_light_orange</item>
+        <item name="colorOutline">@color/accent_orange</item>
+    </style>
 </resources>

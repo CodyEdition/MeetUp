@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">Meet Up</string>
+
+    <!-- Authentication -->
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="sign_up_success">Account created successfully</string>
+    <string name="sign_up_failed">Sign up failed: %1$s</string>
+    <string name="login_failed">Login failed: %1$s</string>
+    <string name="logout">Logout</string>
+    <string name="welcome">Welcome, %1$s</string>
+
+    <!-- Validation -->
+    <string name="error_empty_username">Username is required</string>
+    <string name="error_empty_email">Email is required</string>
+    <string name="error_empty_password">Password is required</string>
+    <string name="error_empty_confirm_password">Please confirm your password</string>
+    <string name="error_password_mismatch">Passwords do not match</string>
+    <string name="error_password_too_short">Password must be at least 6 characters</string>
 </resources>

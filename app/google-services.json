@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "TODO: Project-Number",
-    "project_id": "TODO: Project-ID",
-    "storage_bucket": "TODO: Project-ID.appspot.com"
+    "project_number": "355928610021",
+    "project_id": "meetup-group3",
+    "storage_bucket": "meetup-group3.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:000000000000:android:0000000000000000000000",
+        "mobilesdk_app_id": "1:355928610021:android:2d6167c79b8936b085700c",
         "android_client_info": {
           "package_name": "com.meetup"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "TODO: API-Key"
+          "current_key": "AIzaSyB7S4gAwPwNmwuVUrptmAvvqwob4i54h9w"
         }
       ],
       "services": {

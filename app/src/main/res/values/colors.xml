@@ -2,4 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Theme colours -->
+    <color name="background_dark">#333333</color>
+    <color name="accent_orange">#FFA900</color>
+    <color name="accent_light_orange">#FFD582</color>
+    <color name="text_on_dark">#FFFFFFFF</color>
+    <color name="text_on_accent">#FF333333</color>
 </resources>
