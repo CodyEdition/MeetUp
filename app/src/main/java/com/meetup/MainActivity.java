@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -26,8 +28,14 @@ public class MainActivity extends AppCompatActivity {
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-            ((TextView) findViewById(R.id.welcomeText)).setText(getString(R.string.welcome, email != null ? email : ""));
+            ((TextView) findViewById(R.id.welcomeText)).setText(
+                    getString(R.string.welcome, email != null ? email : "")
+            );
         }
+
+        findViewById(R.id.ottawaButton).setOnClickListener(v -> openEventBrowsing("Ottawa"));
+        findViewById(R.id.torontoButton).setOnClickListener(v -> openEventBrowsing("Toronto"));
+        findViewById(R.id.montrealButton).setOnClickListener(v -> openEventBrowsing("Montreal"));
 
         findViewById(R.id.logoutButton).setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
@@ -36,5 +44,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+    }
+
+    private void openEventBrowsing(String city) {
+        Intent intent = new Intent(MainActivity.this, EventBrowsingActivity.class);
+        intent.putExtra("selected_city", city);
+        startActivity(intent);
     }
 }
