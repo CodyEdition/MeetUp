@@ -27,6 +27,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+        <activity android:name=".EventDetailsActivity" />
+        <activity android:name=".EventBrowsingActivity" />
     </application>
 
 </manifest>
