@@ -5,12 +5,19 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,9 +40,32 @@ public class MainActivity extends AppCompatActivity {
             );
         }
 
-        findViewById(R.id.ottawaButton).setOnClickListener(v -> openEventBrowsing("Ottawa"));
-        findViewById(R.id.torontoButton).setOnClickListener(v -> openEventBrowsing("Toronto"));
-        findViewById(R.id.montrealButton).setOnClickListener(v -> openEventBrowsing("Montreal"));
+        List<String> cities = Arrays.asList(getResources().getStringArray(R.array.city_hubs));
+        RecyclerView recyclerView = findViewById(R.id.cityWheelRecycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new CityWheelUiHelper.SelectionBandDecoration(this));
+
+        CityWheelAdapter adapter = new CityWheelAdapter(cities, this::openEventBrowsing);
+        recyclerView.setAdapter(adapter);
+
+        LinearSnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(recyclerView);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView rv, int dx, int dy) {
+                CityWheelUiHelper.applyWheelTransforms(rv);
+            }
+
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView rv, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    CityWheelUiHelper.applyWheelTransforms(rv);
+                }
+            }
+        });
+        recyclerView.post(() -> CityWheelUiHelper.applyWheelTransforms(recyclerView));
 
         findViewById(R.id.logoutButton).setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();

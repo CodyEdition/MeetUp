@@ -26,6 +26,10 @@
             android:theme="@style/Theme.MeetUp.Auth" />
         <activity
             android:name=".MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MeetUp.Auth" />
+        <activity
+            android:name=".EventBrowsingActivity"
             android:exported="false" />
     </application>
 

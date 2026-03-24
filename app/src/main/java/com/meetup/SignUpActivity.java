@@ -26,8 +26,6 @@ public class SignUpActivity extends AppCompatActivity {
     private TextInputEditText passwordEditText;
     private TextInputEditText confirmPasswordEditText;
 
-    private static final int MIN_PASSWORD_LENGTH = 6;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,26 +62,28 @@ public class SignUpActivity extends AppCompatActivity {
         String password = passwordEditText.getText() != null ? passwordEditText.getText().toString() : "";
         String confirmPassword = confirmPasswordEditText.getText() != null ? confirmPasswordEditText.getText().toString() : "";
 
+        AuthInputValidator.SignUpResult validation = AuthInputValidator.validateSignUp(
+                username, email, password, confirmPassword);
         boolean valid = true;
-        if (username.isEmpty()) {
+        if (validation.usernameEmpty) {
             usernameLayout.setError(getString(R.string.error_empty_username));
             valid = false;
         }
-        if (email.isEmpty()) {
+        if (validation.emailEmpty) {
             emailLayout.setError(getString(R.string.error_empty_email));
             valid = false;
         }
-        if (password.isEmpty()) {
+        if (validation.passwordEmpty) {
             passwordLayout.setError(getString(R.string.error_empty_password));
             valid = false;
-        } else if (password.length() < MIN_PASSWORD_LENGTH) {
+        } else if (validation.passwordTooShort) {
             passwordLayout.setError(getString(R.string.error_password_too_short));
             valid = false;
         }
-        if (confirmPassword.isEmpty()) {
+        if (validation.confirmPasswordEmpty) {
             confirmPasswordLayout.setError(getString(R.string.error_empty_confirm_password));
             valid = false;
-        } else if (!password.equals(confirmPassword)) {
+        } else if (validation.passwordsMismatch) {
             confirmPasswordLayout.setError(getString(R.string.error_password_mismatch));
             valid = false;
         }

@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_dark"
     android:padding="24dp"
     tools:context=".MainActivity">
 
@@ -14,6 +15,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Welcome"
+        android:textColor="@color/text_on_dark"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,50 +29,48 @@
         android:layout_marginTop="32dp"
         android:gravity="center"
         android:text="Select Your City Hub"
+        android:textColor="@color/accent_light_orange"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/welcomeText" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/ottawaButton"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cityWheelContainer"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="280dp"
         android:layout_marginTop="24dp"
-        android:text="Ottawa"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/selectCityText" />
+        app:layout_constraintTop_toBottomOf="@id/selectCityText">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/torontoButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Toronto"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ottawaButton" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/montrealButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Montreal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/torontoButton" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cityWheelRecycler"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingTop="112dp"
+            android:paddingBottom="112dp"
+            android:background="@android:color/transparent"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/logoutButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:backgroundTint="@color/accent_orange"
         android:text="@string/logout"
+        android:textColor="@color/text_on_accent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/montrealButton" />
+        app:layout_constraintTop_toBottomOf="@id/cityWheelContainer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

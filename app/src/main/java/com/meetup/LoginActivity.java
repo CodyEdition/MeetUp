@@ -57,12 +57,13 @@ public class LoginActivity extends AppCompatActivity {
         String email = emailEditText.getText() != null ? emailEditText.getText().toString().trim() : "";
         String password = passwordEditText.getText() != null ? passwordEditText.getText().toString() : "";
 
+        AuthInputValidator.LoginResult validation = AuthInputValidator.validateLogin(email, password);
         boolean valid = true;
-        if (email.isEmpty()) {
+        if (validation.emailEmpty) {
             emailLayout.setError(getString(R.string.error_empty_email));
             valid = false;
         }
-        if (password.isEmpty()) {
+        if (validation.passwordEmpty) {
             passwordLayout.setError(getString(R.string.error_empty_password));
             valid = false;
         }

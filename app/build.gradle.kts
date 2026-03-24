@@ -41,6 +41,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.androidx.recyclerview)
 
     // SQLite Room
     implementation(libs.room.runtime)
