@@ -24,4 +24,6 @@
     <string name="error_empty_confirm_password">Please confirm your password</string>
     <string name="error_password_mismatch">Passwords do not match</string>
     <string name="error_password_too_short">Password must be at least 6 characters</string>
+    <string name="select_your_city_hub">Select Your City Hub</string>
+    <string name="welcome_message">Welcome</string>
 </resources>
