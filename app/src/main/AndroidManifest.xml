@@ -31,6 +31,8 @@
         <activity
             android:name=".EventBrowsingActivity"
             android:exported="false" />
+        <activity android:name=".EventDetailsActivity" />
+        <activity android:name=".EventBrowsingActivity" />
     </application>
 
 </manifest>
