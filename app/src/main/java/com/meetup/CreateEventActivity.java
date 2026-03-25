@@ -273,7 +273,7 @@ public class CreateEventActivity extends AppCompatActivity {
             return;
         }
 
-        EventEntity event = new EventEntity(title, description, city, date, time, location, maxAttendees);
+        EventEntity event = new EventEntity(title, description, city, date, time, location, maxAttendees, false);
         AppDatabase.getInstance(this).eventDao().insert(event);
 
         Toast.makeText(this, getString(R.string.event_created_success), Toast.LENGTH_SHORT).show();

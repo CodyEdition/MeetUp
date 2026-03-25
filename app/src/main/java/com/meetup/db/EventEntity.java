@@ -31,7 +31,7 @@ public class EventEntity { // replaces placeholder
         this.maxAttendees = 0;
     }
 
-    public EventEntity(String title, String description, String city, String date, String time, String location, int maxAttendees) {
+    public EventEntity(String title, String description, String city, String date, String time, String location, int maxAttendees, boolean isRsvped) {
         this.title = title;
         this.description = description;
         this.city = city;
