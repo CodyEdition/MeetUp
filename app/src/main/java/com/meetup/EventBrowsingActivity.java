@@ -1,6 +1,7 @@
 package com.meetup;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -55,7 +56,11 @@ public class EventBrowsingActivity extends AppCompatActivity {
 
         selectedCity = getIntent().getStringExtra("selected_city");
         if (selectedCity == null) {
-            selectedCity = "Unknown City";
+            SharedPreferences prefs = getSharedPreferences("meetup_prefs", MODE_PRIVATE);
+            selectedCity = prefs.getString("selected_city_hub", null);
+        }
+        if (selectedCity == null) {
+            selectedCity = CityHub.values()[0].getDisplayName();
         }
 
         cityTitleText.setText("Events in " + selectedCity);

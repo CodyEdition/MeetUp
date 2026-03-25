@@ -1,6 +1,7 @@
 package com.meetup;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -16,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,7 +41,11 @@ public class MainActivity extends AppCompatActivity {
             );
         }
 
-        List<String> cities = Arrays.asList(getResources().getStringArray(R.array.city_hubs));
+        List<String> cities = new ArrayList<>();
+        for (CityHub hub : CityHub.values()) {
+            cities.add(hub.getDisplayName());
+        }
+
         RecyclerView recyclerView = findViewById(R.id.cityWheelRecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recyclerView.setHasFixedSize(true);
@@ -77,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openEventBrowsing(String city) {
+        SharedPreferences prefs = getSharedPreferences("meetup_prefs", MODE_PRIVATE);
+        prefs.edit().putString("selected_city_hub", city).apply();
+
         Intent intent = new Intent(MainActivity.this, EventBrowsingActivity.class);
         intent.putExtra("selected_city", city);
         startActivity(intent);
