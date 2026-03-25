@@ -34,6 +34,10 @@
         <activity
             android:name=".EventDetailsActivity"
             android:exported="false" />
+        <activity
+            android:name=".CreateEventActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MeetUp.Auth" />
     </application>
 
 </manifest>

@@ -76,6 +76,11 @@ public class EventBrowsingActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.backButton).setOnClickListener(v -> finish());
+        findViewById(R.id.createEventButton).setOnClickListener(v -> {
+            Intent intent = new Intent(EventBrowsingActivity.this, CreateEventActivity.class);
+            intent.putExtra("selected_city", selectedCity);
+            startActivity(intent);
+        });
             // sample data to test with
         if (db.eventDao().getAll().isEmpty()) {
             db.eventDao().insert(new EventEntity("Tech Meetup", "A meetup for developers", "Ottawa", "2026-03-25"));

@@ -26,4 +26,23 @@
     <string name="error_password_too_short">Password must be at least 6 characters</string>
     <string name="select_your_city_hub">Select Your City Hub</string>
     <string name="welcome_message">Welcome</string>
+
+    <string name="create_event">Create Event</string>
+    <string name="event_title">Title</string>
+    <string name="event_description">Description</string>
+    <string name="event_date">Date</string>
+    <string name="event_time">Time (HH:MM)</string>
+    <string name="city_hub">City Hub</string>
+    <string name="event_location">Location</string>
+    <string name="max_attendees">Max Attendees</string>
+    <string name="back">Back</string>
+    <string name="error_required">This field is required</string>
+    <string name="error_date_invalid">Enter a valid date</string>
+    <string name="error_date_past">Date cannot be in the past</string>
+    <string name="error_time_invalid">Enter a valid time</string>
+    <string name="error_time_past">Time cannot be in the past for today</string>
+    <string name="error_attendees_invalid">Enter a valid number</string>
+    <string name="error_attendees_min">Must have at least 2 attendees</string>
+    <string name="error_attendees_max">Cannot exceed 10,000 attendees</string>
+    <string name="event_created_success">Event created successfully</string>
 </resources>
