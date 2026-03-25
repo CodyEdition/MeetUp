@@ -20,4 +20,7 @@ public interface EventDao { //replaces PlaceholderDao
 
     @Query("SELECT * FROM events WHERE id = :eventId LIMIT 1")
     EventEntity getEventById(int eventId);
+
+    @Query("UPDATE events SET isRsvped = :isRsvped WHERE id = :eventId")
+    void updateRsvpStatus(int eventId, boolean isRsvped);
 }
