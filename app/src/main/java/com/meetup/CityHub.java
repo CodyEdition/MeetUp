@@ -1,27 +1,23 @@
 package com.meetup;
 
 public enum CityHub {
-    OTTAWA("Ottawa"),
-    TORONTO("Toronto"),
-    MONTREAL("Montreal");
+    OTTAWA("Ottawa", "Ontario"),
+    TORONTO("Toronto", "Ontario"),
+    MONTREAL("Montreal", "Quebec");
 
     private final String displayName;
+    private final String province;
 
-    CityHub(String displayName) {
+    CityHub(String displayName, String province) {
         this.displayName = displayName;
+        this.province = province;
     }
 
     public String getDisplayName() {
         return displayName;
     }
 
-    public static CityHub fromDisplayName(String name) {
-        if (name == null) return null;
-        for (CityHub hub : values()) {
-            if (hub.displayName.equalsIgnoreCase(name)) {
-                return hub;
-            }
-        }
-        return null;
+    public String getProvince() {
+        return province;
     }
 }

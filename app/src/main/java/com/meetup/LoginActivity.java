@@ -13,6 +13,9 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.meetup.db.AppDatabase;
+import com.meetup.db.UserEntity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -33,7 +36,9 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // Session check
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            saveUserToDb(currentUser);
             startActivity(new Intent(this, MainActivity.class));
             finish();
             return;
@@ -74,6 +79,10 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     findViewById(R.id.signInButton).setEnabled(true);
                     if (task.isSuccessful()) {
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        if (user != null) {
+                            saveUserToDb(user);
+                        }
                         startActivity(new Intent(this, MainActivity.class));
                         finish();
                     } else {
@@ -83,8 +92,12 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    private void saveUserToDb(FirebaseUser firebaseUser) {
+        UserEntity userEntity = new UserEntity(firebaseUser.getUid(), firebaseUser.getEmail(), true);
+        AppDatabase.getInstance(this).userDao().insertOrUpdateUser(userEntity);
+    }
+
     private void clearErrors() {
         emailLayout.setError(null);
-        passwordLayout.setError(null);
     }
 }

@@ -22,9 +22,12 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.meetup.db.AppDatabase;
+import com.meetup.db.CityEntity;
 import com.meetup.db.EventEntity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class CreateEventActivity extends AppCompatActivity {
@@ -79,9 +82,7 @@ public class CreateEventActivity extends AppCompatActivity {
         eventLocationEditText = findViewById(R.id.eventLocationEditText);
         eventMaxAttendeesEditText = findViewById(R.id.eventMaxAttendeesEditText);
 
-        String[] cities = getResources().getStringArray(R.array.city_hubs);
-        ArrayAdapter<String> cityAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, cities);
-        eventCityDropdown.setAdapter(cityAdapter);
+        loadCitiesIntoDropdown();
 
         eventTitleEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -134,6 +135,18 @@ public class CreateEventActivity extends AppCompatActivity {
 
         findViewById(R.id.backButton).setOnClickListener(v -> finish());
         findViewById(R.id.createEventButton).setOnClickListener(v -> attemptCreateEvent());
+    }
+
+    private void loadCitiesIntoDropdown() {
+        List<CityEntity> cityEntities = AppDatabase.getInstance(this).cityDao().getAllCities();
+        List<String> cities = new ArrayList<>();
+        for (CityEntity city : cityEntities) {
+            cities.add(city.cityName);
+        }
+
+        // Use custom item_dropdown to ensure black text color
+        ArrayAdapter<String> cityAdapter = new ArrayAdapter<>(this, R.layout.item_dropdown, cities);
+        eventCityDropdown.setAdapter(cityAdapter);
     }
 
     private void showDatePicker() {
