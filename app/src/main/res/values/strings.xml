@@ -45,4 +45,14 @@
     <string name="error_attendees_min">Must have at least 2 attendees</string>
     <string name="error_attendees_max">Cannot exceed 10,000 attendees</string>
     <string name="event_created_success">Event created successfully</string>
+    <string name="no_events_found">No events found. Tap \'Create Event\' to create one!</string>
+    <string name="error">Something went wrong.</string>
+    <string name="loading_events">Loading events…</string>
+    <string name="refresh">Refresh</string>
+    <string name="events_in">"Events in "</string>
+    <string name="status_joined">Status: Joined</string>
+    <string name="status_not_joined">Status: Not Joined</string>
+    <string name="refreshing">Refreshing…</string>
+    <string name="something_went_wrong">Something went wrong while loading events.</string>
+    <string name="no_events">No events yet. Tap \'Create Event\' to add one.</string>
 </resources>

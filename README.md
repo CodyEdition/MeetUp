@@ -19,7 +19,7 @@ A Java Android app for discovering and managing meetups.
 4. **Open the Project**
    **File → Open** and select the repository root `MeetUp`. Let Gradle sync finish.
 
-5. **Run on a Emulator**  
+5. **Run on an Emulator**  
    - **minSdk**: 28  
    - **targetSdk** / **compileSdk**: 36
 
@@ -27,9 +27,9 @@ A Java Android app for discovering and managing meetups.
 
 Dependencies are declared in `app/build.gradle.kts` and versioned in `gradle/libs.versions.toml`.
 
-| Used For | Libraries |
-|------|----------------------------------|
-| **Local Database** | Room (`room-runtime`, `room-compiler`) |
+| Used For           | Libraries                                 |
+|--------------------|-------------------------------------------|
+| **Local Database** | Room (`room-runtime`, `room-compiler`)    |
 | **Authentication** | Firebase Authentication (`firebase-auth`) |
 
 Repositories are centralized in `settings.gradle.kts` (`google()`, `mavenCentral()`).

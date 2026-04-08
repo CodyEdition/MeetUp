@@ -1,14 +1,14 @@
 <resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.MeetUp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
-    </style>
-
-    <style name="Theme.MeetUp.Auth" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/background_dark</item>
         <item name="android:statusBarColor">@color/background_dark</item>
         <item name="android:navigationBarColor">@color/background_dark</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+
+    <style name="Theme.MeetUp.Auth" parent="Theme.MeetUp">
         <item name="colorPrimary">@color/accent_orange</item>
         <item name="colorOnPrimary">@color/text_on_accent</item>
         <item name="colorSurface">@color/background_dark</item>

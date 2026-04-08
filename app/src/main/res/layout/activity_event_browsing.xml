@@ -13,20 +13,22 @@
         android:id="@+id/cityTitleText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="Events in Ottawa"
-        android:textColor="@color/text_on_dark"
+        android:textAlignment="center"
+        android:textColor="@color/accent_orange"
         android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Reload Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/reloadButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reload"
+        android:text="@string/refresh"
         android:textColor="@color/text_on_accent"
         app:backgroundTint="@color/accent_orange"
         android:layout_marginTop="12dp"
@@ -38,7 +40,7 @@
         android:id="@+id/loadingText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Loading events..."
+        android:text="@string/loading_events"
         android:textColor="@color/text_on_dark"
         android:layout_marginTop="12dp"
         app:layout_constraintTop_toBottomOf="@id/reloadButton"
@@ -49,7 +51,7 @@
         android:id="@+id/errorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Something went wrong."
+        android:text="@string/error"
         android:textColor="@color/text_on_dark"
         android:visibility="gone"
         android:layout_marginTop="12dp"
@@ -61,7 +63,7 @@
         android:id="@+id/emptyStateText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No events yet. Tap 'Create Event' to add one."
+        android:text="@string/no_events_found"
         android:textColor="@color/text_on_dark"
         android:visibility="gone"
         android:layout_marginTop="12dp"
@@ -88,13 +90,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="20dp"
         android:text="Back"
         android:textColor="@color/text_on_accent"
         app:backgroundTint="@color/accent_orange"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/createEventButton"
-        app:layout_constraintHorizontal_weight="1" />
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <!-- Create Event Button -->
     <com.google.android.material.button.MaterialButton
@@ -102,12 +105,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="Create Event"
+        android:layout_marginBottom="20dp"
+        android:text="@string/create_event"
         android:textColor="@color/text_on_accent"
         app:backgroundTint="@color/accent_orange"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/backButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="1" />
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/backButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

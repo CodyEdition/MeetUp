@@ -1,7 +1,6 @@
 package com.meetup;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -27,7 +27,6 @@ public class EventBrowsingActivity extends AppCompatActivity {
 
     private static final String EVENT_DEBUG = "EVENT_DEBUG";
 
-    private TextView cityTitleText;
     private TextView loadingText;
     private TextView errorText;
     private TextView emptyStateText;
@@ -43,6 +42,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_event_browsing);
+        SystemUiHelper.applyMeetUpSystemBars(this);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.eventBrowsingMain), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -50,7 +50,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
             return insets;
         });
 
-        cityTitleText = findViewById(R.id.cityTitleText);
+        TextView cityTitleText = findViewById(R.id.cityTitleText);
         loadingText = findViewById(R.id.loadingText);
         errorText = findViewById(R.id.errorText);
         emptyStateText = findViewById(R.id.emptyStateText);
@@ -63,11 +63,12 @@ public class EventBrowsingActivity extends AppCompatActivity {
             selectedCity = "Unknown City";
         }
 
-        cityTitleText.setText("Events in " + selectedCity);
+        cityTitleText.setText(getString(R.string.events_in) + selectedCity);
 
-        adapter = new ArrayAdapter<EventEntity>(this, 0, filteredEvents) {
+        adapter = new ArrayAdapter<>(this, 0, filteredEvents) {
+            @NonNull
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
+            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
                 View view = convertView;
                 if (view == null) {
                     view = getLayoutInflater().inflate(R.layout.item_event_browsing, parent, false);
@@ -85,10 +86,10 @@ public class EventBrowsingActivity extends AppCompatActivity {
 
                     // isRsvped represents whether the current user has joined this event
                     if (event.isRsvped) {
-                        rsvpText.setText("Status: Joined");
+                        rsvpText.setText(R.string.status_joined);
                         rsvpText.setTextColor(getResources().getColor(R.color.accent_orange));
                     } else {
-                        rsvpText.setText("Status: Not Joined");
+                        rsvpText.setText(R.string.status_not_joined);
                         rsvpText.setTextColor(getResources().getColor(R.color.text_on_dark));
                     }
                 }
@@ -112,7 +113,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.reloadButton).setOnClickListener(v -> {
-            loadingText.setText("Refreshing...");
+            loadingText.setText(R.string.refreshing);
             Log.d(EVENT_DEBUG, "Manual reload triggered for city: " + selectedCity);
             loadEvents();
             Toast.makeText(EventBrowsingActivity.this, "Events refreshed", Toast.LENGTH_SHORT).show();
@@ -178,7 +179,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
     }
 
     private void showLoadingState() {
-        loadingText.setText("Loading events...");
+        loadingText.setText(R.string.loading_events);
         loadingText.setVisibility(View.VISIBLE);
         errorText.setVisibility(View.GONE);
         emptyStateText.setVisibility(View.GONE);
@@ -187,7 +188,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
 
     private void showErrorState() {
         loadingText.setVisibility(View.GONE);
-        errorText.setText("Something went wrong while loading events.");
+        errorText.setText(R.string.something_went_wrong);
         errorText.setVisibility(View.VISIBLE);
         emptyStateText.setVisibility(View.GONE);
         eventsListView.setVisibility(View.GONE);
@@ -196,7 +197,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
     private void showEmptyState() {
         loadingText.setVisibility(View.GONE);
         errorText.setVisibility(View.GONE);
-        emptyStateText.setText("No events yet. Tap 'Create Event' to add one.");
+        emptyStateText.setText(R.string.no_events);
         emptyStateText.setVisibility(View.VISIBLE);
         eventsListView.setVisibility(View.GONE);
     }
