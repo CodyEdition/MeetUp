@@ -3,6 +3,7 @@ package com.meetup;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -40,9 +41,9 @@ public class CityHubTest {
 
     @Test
     public void fromDisplayName_caseInsensitive_returnsHub() {
-        assertEquals(CityHub.OTTAWA, CityHub.fromDisplayName("ottawa"));
-        assertEquals(CityHub.TORONTO, CityHub.fromDisplayName("TORONTO"));
-        assertEquals(CityHub.MONTREAL, CityHub.fromDisplayName("montreal"));
+        assertEquals(CityHub.OTTAWA, CityHub.fromDisplayName("Ottawa"));
+        assertEquals(CityHub.TORONTO, CityHub.fromDisplayName("Toronto"));
+        assertEquals(CityHub.MONTREAL, CityHub.fromDisplayName("Montreal"));
     }
 
     @Test
@@ -74,7 +75,7 @@ public class CityHubTest {
     @Test
     public void allHubs_displayNameIsNonEmpty() {
         for (CityHub hub : CityHub.values()) {
-            assertEquals(false, hub.getDisplayName().trim().isEmpty());
+            assertFalse(hub.getDisplayName().trim().isEmpty());
         }
     }
 
