@@ -2,7 +2,7 @@
 
 A Java Android app for discovering and managing meetups.
 
-## How to Setup The Environment
+## Environment Setup
 
 1. **Install Android Studio**  
    Use a recent stable release that supports **Android Gradle Plugin 9.x** and **API level 36** (the project’s compile and target SDK).
