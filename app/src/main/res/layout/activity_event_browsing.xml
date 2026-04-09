@@ -80,38 +80,23 @@
         android:dividerHeight="1dp"
         android:background="@color/background_dark"
         app:layout_constraintTop_toBottomOf="@id/reloadButton"
-        app:layout_constraintBottom_toTopOf="@id/backButton"
+        app:layout_constraintBottom_toTopOf="@id/createEventButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Back Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/backButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="20dp"
-        android:text="Back"
-        android:textColor="@color/text_on_accent"
-        app:backgroundTint="@color/accent_orange"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/createEventButton"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <!-- Create Event Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/createEventButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="20dp"
         android:text="@string/create_event"
         android:textColor="@color/text_on_accent"
         app:backgroundTint="@color/accent_orange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@id/backButton" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

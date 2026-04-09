@@ -119,8 +119,6 @@ public class EventBrowsingActivity extends AppCompatActivity {
             Toast.makeText(EventBrowsingActivity.this, "Events refreshed", Toast.LENGTH_SHORT).show();
         });
 
-        findViewById(R.id.backButton).setOnClickListener(v -> finish());
-
         findViewById(R.id.createEventButton).setOnClickListener(v -> {
             Intent intent = new Intent(EventBrowsingActivity.this, CreateEventActivity.class);
             intent.putExtra("selected_city", selectedCity);

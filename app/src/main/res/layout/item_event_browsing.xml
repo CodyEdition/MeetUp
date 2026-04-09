@@ -11,6 +11,7 @@
         android:id="@+id/eventTitleItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
         android:text="Event Title"
         android:textColor="@color/text_on_dark"
         android:textSize="18sp"
@@ -21,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
+        android:fontFamily="sans-serif-medium"
         android:text="2026-03-25 • Ottawa"
         android:textColor="@color/text_on_dark"
         android:textSize="14sp" />
@@ -30,6 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
+        android:fontFamily="sans-serif-medium"
         android:text="Status: Not Joined"
         android:textColor="@color/accent_light_orange"
         android:textSize="14sp"

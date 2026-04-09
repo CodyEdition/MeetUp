@@ -11,77 +11,92 @@
         android:id="@+id/detailsTitleText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"
         android:text="Event Title"
+        android:textAlignment="center"
         android:textColor="@color/text_on_dark"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/detailsDescriptionText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
         android:text="Event Description"
         android:textColor="@color/text_on_dark"
         android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/detailsTitleText"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/detailsTitleText" />
 
     <TextView
         android:id="@+id/detailsCityText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
         android:text="City: Ottawa"
-        android:textColor="@color/text_on_dark"
+        android:textColor="@color/accent_light_orange"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/detailsDescriptionText"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/detailsDescriptionText" />
 
     <TextView
         android:id="@+id/detailsDateText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
         android:text="Date: 2026-03-25"
-        android:textColor="@color/text_on_dark"
+        android:textColor="@color/accent_light_orange"
         android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/detailsCityText"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/detailsCityText" />
 
     <TextView
         android:id="@+id/rsvpStatusText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="12dp"
         android:text="Status: You have not RSVP’d for this event yet."
+        android:textAlignment="center"
         android:textColor="@color/text_on_dark"
         android:textSize="16sp"
         android:textStyle="italic"
-        app:layout_constraintTop_toBottomOf="@id/detailsDateText"
+        app:layout_constraintBottom_toTopOf="@id/rsvpButton"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/detailsDateText"
+        app:layout_constraintVertical_bias="1" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/rsvpButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
         android:text="RSVP Now"
         android:textColor="@color/text_on_accent"
         app:backgroundTint="@color/accent_orange"
         app:cornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rsvpStatusText" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

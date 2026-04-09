@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         EditText cityInput = dialogView.findViewById(R.id.editCityName);
         EditText provinceInput = dialogView.findViewById(R.id.editProvinceName);
 
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(this, R.style.ThemeOverlay_MeetUp_AlertDialog)
                 .setTitle("Add New City Hub")
                 .setView(dialogView)
                 .setPositiveButton("Add", (dialog, which) -> {
