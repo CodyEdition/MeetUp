@@ -9,6 +9,33 @@
     android:padding="24dp"
     tools:context=".MainActivity">
 
+    <FrameLayout
+        android:id="@+id/profileAvatarButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_avatar_circle" />
+
+        <TextView
+            android:id="@+id/profileAvatarInitials"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/text_on_accent"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
     <TextView
         android:id="@+id/welcomeText"
         android:layout_width="0dp"

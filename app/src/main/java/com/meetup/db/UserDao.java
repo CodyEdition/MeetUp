@@ -15,4 +15,10 @@ public interface UserDao {
 
     @Query("DELETE FROM users")
     void clearUser();
+
+    @Query("UPDATE users SET displayName = :displayName, bio = :bio WHERE id = :id")
+    void updateProfile(int id, String displayName, String bio);
+
+    @Query("UPDATE users SET email = :email WHERE id = :id")
+    void updateEmail(int id, String email);
 }

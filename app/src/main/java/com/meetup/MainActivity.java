@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private AppDatabase db;
     private final List<String> cityDisplayNames = new ArrayList<>();
     private CityWheelAdapter adapter;
+    private TextView profileAvatarInitials;
 
     private boolean isGuest = false;
 
@@ -51,16 +52,24 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        profileAvatarInitials = findViewById(R.id.profileAvatarInitials);
         TextView welcomeText = findViewById(R.id.welcomeText);
 
         if (isGuest) {
             welcomeText.setText("Welcome, Guest");
+            findViewById(R.id.profileAvatarButton).setVisibility(View.GONE);
         } else if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
             welcomeText.setText(
                     getString(R.string.welcome, email != null ? email : "")
             );
+            updateProfileAvatar();
         }
+
+        findViewById(R.id.profileAvatarButton).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(intent);
+        });
 
         seedCitiesIfNeeded();
         loadCities();
@@ -172,5 +181,36 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("selected_city", cityName);
         intent.putExtra(LoginActivity.EXTRA_IS_GUEST, isGuest);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!isGuest) {
+            updateProfileAvatar();
+        }
+    }
+
+    private void updateProfileAvatar() {
+        UserEntity user = db.userDao().getCurrentUser();
+        String email = FirebaseAuth.getInstance().getCurrentUser() != null 
+                ? FirebaseAuth.getInstance().getCurrentUser().getEmail() : "";
+
+        String initials;
+        if (user != null && user.displayName != null && !user.displayName.isEmpty()) {
+            String displayName = user.displayName;
+            String[] parts = displayName.split("\\s+");
+            if (parts.length >= 2) {
+                initials = (parts[0].substring(0, 1) + parts[1].substring(0, 1)).toUpperCase();
+            } else {
+                initials = displayName.substring(0, Math.min(2, displayName.length())).toUpperCase();
+            }
+        } else if (email != null && !email.isEmpty()) {
+            initials = email.substring(0, Math.min(2, email.length())).toUpperCase();
+        } else {
+            initials = "?";
+        }
+
+        profileAvatarInitials.setText(initials);
     }
 }

@@ -12,11 +12,15 @@ public class UserEntity {
     public String email;
     public boolean isLoggedIn;
     public String lastSelectedCity;
+    public String displayName;
+    public String bio;
 
     public UserEntity(String userId, String email, boolean isLoggedIn) {
         this.userId = userId;
         this.email = email;
         this.isLoggedIn = isLoggedIn;
         this.lastSelectedCity = "";
+        this.displayName = "";
+        this.bio = "";
     }
 }
