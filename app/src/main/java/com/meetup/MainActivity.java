@@ -33,11 +33,14 @@ public class MainActivity extends AppCompatActivity {
     private final List<String> cityDisplayNames = new ArrayList<>();
     private CityWheelAdapter adapter;
 
+    private boolean isGuest = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        isGuest = getIntent().getBooleanExtra(LoginActivity.EXTRA_IS_GUEST, false);
         SystemUiHelper.applyMeetUpSystemBars(this);
 
         db = AppDatabase.getInstance(this);
@@ -48,9 +51,13 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+        TextView welcomeText = findViewById(R.id.welcomeText);
+
+        if (isGuest) {
+            welcomeText.setText("Welcome, Guest");
+        } else if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-            ((TextView) findViewById(R.id.welcomeText)).setText(
+            welcomeText.setText(
                     getString(R.string.welcome, email != null ? email : "")
             );
         }
@@ -85,8 +92,12 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.post(() -> CityWheelUiHelper.applyWheelTransforms(recyclerView));
 
         findViewById(R.id.logoutButton).setOnClickListener(v -> {
-            FirebaseAuth.getInstance().signOut();
-            db.userDao().clearUser();
+
+            if (!isGuest) {
+                FirebaseAuth.getInstance().signOut();
+                db.userDao().clearUser();
+            }
+
             Intent intent = new Intent(this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -153,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(MainActivity.this, EventBrowsingActivity.class);
         intent.putExtra("selected_city", cityName);
+        intent.putExtra(LoginActivity.EXTRA_IS_GUEST, isGuest);
         startActivity(intent);
     }
 }
