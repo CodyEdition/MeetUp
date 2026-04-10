@@ -104,7 +104,13 @@ public class MainActivity extends AppCompatActivity {
             finish();
         });
 
-        findViewById(R.id.addCityButton).setOnClickListener(v -> showAddCityDialog());
+        findViewById(R.id.addCityButton).setOnClickListener(v -> {
+            if (isGuest) {
+                Toast.makeText(this, "Guest users cannot add cities. Please sign in.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            showAddCityDialog();
+        });
     }
 
     private void seedCitiesIfNeeded() {

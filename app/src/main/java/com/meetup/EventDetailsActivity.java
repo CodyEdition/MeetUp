@@ -28,10 +28,12 @@ public class EventDetailsActivity extends AppCompatActivity {
     private TextView dateText;
     private TextView rsvpStatusText;
     private Button rsvpButton;
+    private boolean isGuest = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isGuest = getIntent().getBooleanExtra(LoginActivity.EXTRA_IS_GUEST, false);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_event_details);
         SystemUiHelper.applyMeetUpSystemBars(this);
@@ -83,6 +85,19 @@ public class EventDetailsActivity extends AppCompatActivity {
         } else {
             Log.e(RSVP_DEBUG, "Event not found for event ID: " + eventId);
             showEventNotFound();
+        }
+        if (isGuest) {
+            rsvpButton.setEnabled(false);
+            rsvpStatusText.setText("Sign in to RSVP for this event.");
+        } else {
+            updateRsvpUi();
+
+            rsvpButton.setOnClickListener(v -> {
+                boolean newStatus = !event.isRsvped;
+                db.eventDao().updateRsvpStatus(event.id, newStatus);
+                event.isRsvped = newStatus;
+                updateRsvpUi();
+            });
         }
     }
 

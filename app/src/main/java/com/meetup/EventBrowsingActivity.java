@@ -37,12 +37,15 @@ public class EventBrowsingActivity extends AppCompatActivity {
     private final List<EventEntity> filteredEvents = new ArrayList<>();
     private ArrayAdapter<EventEntity> adapter;
 
+    private boolean isGuest = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_event_browsing);
         SystemUiHelper.applyMeetUpSystemBars(this);
+        isGuest = getIntent().getBooleanExtra(LoginActivity.EXTRA_IS_GUEST, false);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.eventBrowsingMain), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -105,10 +108,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
 
             Intent intent = new Intent(EventBrowsingActivity.this, EventDetailsActivity.class);
             intent.putExtra("event_id", selectedEvent.id);
-            intent.putExtra("event_title", selectedEvent.title);
-            intent.putExtra("event_description", selectedEvent.description);
-            intent.putExtra("event_city", selectedEvent.city);
-            intent.putExtra("event_date", selectedEvent.date);
+            intent.putExtra(LoginActivity.EXTRA_IS_GUEST, isGuest);
             startActivity(intent);
         });
 
@@ -120,10 +120,22 @@ public class EventBrowsingActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.createEventButton).setOnClickListener(v -> {
+
+            if (isGuest) {
+                Toast.makeText(this, "Guest users cannot create events. Please sign in.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             Intent intent = new Intent(EventBrowsingActivity.this, CreateEventActivity.class);
             intent.putExtra("selected_city", selectedCity);
+            intent.putExtra(LoginActivity.EXTRA_IS_GUEST, false);
             startActivity(intent);
         });
+        View createButton = findViewById(R.id.createEventButton);
+
+        if (isGuest) {
+            createButton.setVisibility(View.GONE);
+        }
 
         seedSampleDataIfNeeded();
         loadEvents();
