@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
-        android:text="Event Title"
+        android:text="@string/event_title"
         android:textColor="@color/text_on_dark"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Status: Not Joined"
+        android:text="@string/status_not_joined"
         android:textColor="@color/accent_light_orange"
         android:textSize="14sp"
         android:textStyle="bold" />

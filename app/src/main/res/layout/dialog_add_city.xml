@@ -9,7 +9,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="City Name (e.g. Vancouver)">
+        android:hint="@string/city_name_hint">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editCityName"
@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Province (e.g. BC)">
+        android:hint="@string/province_name_hint">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editProvinceName"

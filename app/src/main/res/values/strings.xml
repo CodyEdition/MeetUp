@@ -55,4 +55,38 @@
     <string name="refreshing">Refreshing…</string>
     <string name="something_went_wrong">Something went wrong while loading events.</string>
     <string name="no_events">No events yet. Tap \'Create Event\' to add one.</string>
+
+    <!-- Profile -->
+    <string name="profile">Profile</string>
+    <string name="display_name">Display Name</string>
+    <string name="bio">About Me</string>
+    <string name="change_password">Change Password</string>
+    <string name="save_profile">Save Profile</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
+    <string name="enter_password_to_confirm">Enter Password to Confirm</string>
+    <string name="confirm_email_change">Confirm Email Change</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="change">Change</string>
+    <string name="email_required">Email is required</string>
+    <string name="password_required">Password is required</string>
+    <string name="current_password_required">Current password is required</string>
+    <string name="new_password_required">New password is required</string>
+    <string name="password_too_short">Password must be at least %1$d characters</string>
+    <string name="passwords_dont_match">Passwords do not match</string>
+    <string name="profile_saved">Profile saved successfully</string>
+    <string name="error_loading_profile">Error loading profile</string>
+    <string name="error_not_signed_in">You are not signed in</string>
+    <string name="verification_email_sent">Verification email sent to new address. Please verify to complete the change.</string>
+    <string name="email_update_failed">Failed to update email: %1$s</string>
+    <string name="incorrect_password">Incorrect password</string>
+    <string name="password_changed">Password changed successfully</string>
+    <string name="password_change_failed">Failed to change password: %1$s</string>
+    <string name="status_not_rsvpd">Status: You have not RSVP’d for this event yet.</string>
+    <string name="rsvp">RSVP</string>
+    <string name="add_city">+ Add City</string>
+    <string name="city_name_hint">City Name (e.g. Vancouver)</string>
+    <string name="province_name_hint">Province (e.g. BC)</string>
 </resources>
