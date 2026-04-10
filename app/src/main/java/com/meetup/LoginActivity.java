@@ -19,6 +19,7 @@ import com.meetup.db.UserEntity;
 
 public class LoginActivity extends AppCompatActivity {
 
+    public static final String EXTRA_IS_GUEST = "is_guest";
     private TextInputLayout emailLayout;
     private TextInputLayout passwordLayout;
     private TextInputEditText emailEditText;
@@ -54,7 +55,11 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.signUpButton).setOnClickListener(v -> {
             startActivity(new Intent(this, SignUpActivity.class));
             finish();
+
         });
+
+        findViewById(R.id.guestButton).setOnClickListener(v -> continueAsGuest());
+
     }
 
     private void attemptLogin() {
@@ -93,6 +98,13 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    private void continueAsGuest() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(EXTRA_IS_GUEST, true);
+        startActivity(intent);
+        finish();
+    }
+
     private void saveUserToDb(FirebaseUser firebaseUser) {
         UserEntity userEntity = new UserEntity(firebaseUser.getUid(), firebaseUser.getEmail(), true);
         AppDatabase.getInstance(this).userDao().insertOrUpdateUser(userEntity);
@@ -100,5 +112,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void clearErrors() {
         emailLayout.setError(null);
+        passwordLayout.setError(null);
     }
 }

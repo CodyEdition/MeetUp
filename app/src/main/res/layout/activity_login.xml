@@ -141,6 +141,16 @@
                 android:fontFamily="sans-serif-medium"
                 android:text="@string/sign_up"
                 android:textColor="@color/black" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/guestButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/accent_orange"
+                android:fontFamily="sans-serif-medium"
+                android:text="Continue as Guest"
+                android:textColor="@color/black" />
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>
