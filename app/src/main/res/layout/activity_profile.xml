@@ -143,6 +143,37 @@
                 android:textColor="@color/text_on_dark" />
         </com.google.android.material.textfield.TextInputLayout>
 
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/selectInterestsButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="32dp"
+            android:backgroundTint="@color/accent_orange"
+            android:fontFamily="sans-serif-medium"
+            android:text="Select Interests"
+            android:textColor="@color/text_on_accent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bioLayout" />
+
+        <TextView
+            android:id="@+id/interestsText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:text="No interests selected"
+            android:textColor="@color/text_on_dark"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/selectInterestsButton" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/changePasswordButton"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -156,7 +187,7 @@
             android:textColor="@color/accent_orange"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bioLayout"
+            app:layout_constraintTop_toBottomOf="@id/interestsText"
             app:strokeColor="@color/accent_orange" />
 
         <com.google.android.material.button.MaterialButton
@@ -166,36 +197,15 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
+            android:layout_marginBottom="24dp"
             android:backgroundTint="@color/accent_orange"
             android:fontFamily="sans-serif-medium"
             android:text="@string/save_profile"
             android:textColor="@color/text_on_accent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/changePasswordButton" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/selectInterestsButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Select Interests"
-            android:textColor="@color/text_on_accent"
-            android:backgroundTint="@color/accent_orange"
-            app:layout_constraintTop_toBottomOf="@id/bioEditText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <TextView
-            android:id="@+id/interestsText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="No interests selected"
-            android:textColor="@color/text_on_dark"
-            app:layout_constraintTop_toBottomOf="@id/selectInterestsButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

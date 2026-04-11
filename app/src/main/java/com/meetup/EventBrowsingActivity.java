@@ -38,6 +38,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
     private ArrayAdapter<EventEntity> adapter;
 
     private boolean isGuest = false;
+    private String userInterests = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,10 @@ public class EventBrowsingActivity extends AppCompatActivity {
 
         db = AppDatabase.getInstance(this);
 
+        if (db.userDao().getCurrentUser() != null && db.userDao().getCurrentUser().interests != null) {
+            userInterests = db.userDao().getCurrentUser().interests;
+        }
+
         selectedCity = getIntent().getStringExtra("selected_city");
         if (selectedCity == null || selectedCity.trim().isEmpty()) {
             selectedCity = "Unknown City";
@@ -83,11 +88,13 @@ public class EventBrowsingActivity extends AppCompatActivity {
                 TextView metaText = view.findViewById(R.id.eventMetaItem);
                 TextView rsvpText = view.findViewById(R.id.eventRsvpItem);
 
+                TextView tagText = view.findViewById(R.id.eventTagItem);
+
                 if (event != null) {
                     titleText.setText(event.title);
                     metaText.setText(event.date + " • " + event.city);
 
-                    // isRsvped represents whether the current user has joined this event
+
                     if (event.isRsvped) {
                         rsvpText.setText(R.string.status_joined);
                         rsvpText.setTextColor(getResources().getColor(R.color.accent_orange));
@@ -95,8 +102,21 @@ public class EventBrowsingActivity extends AppCompatActivity {
                         rsvpText.setText(R.string.status_not_joined);
                         rsvpText.setTextColor(getResources().getColor(R.color.text_on_dark));
                     }
-                }
 
+
+                    if (event.tags != null && !event.tags.trim().isEmpty()) {
+                        if (matchesUserInterests(event, userInterests)) {
+                            tagText.setText("🔥 Matching: " + event.tags);
+                            tagText.setTextColor(getResources().getColor(R.color.accent_orange));
+                        } else {
+                            tagText.setText("Tags: " + event.tags);
+                            tagText.setTextColor(getResources().getColor(R.color.text_on_dark));
+                        }
+                        tagText.setVisibility(View.VISIBLE);
+                    } else {
+                        tagText.setVisibility(View.GONE);
+                    }
+                }
                 return view;
             }
         };
@@ -152,13 +172,67 @@ public class EventBrowsingActivity extends AppCompatActivity {
         if (db.eventDao().getAll().isEmpty()) {
             Log.d(EVENT_DEBUG, "Database empty, inserting sample events");
 
-            db.eventDao().insert(new EventEntity("Tech Meetup", "A meetup for developers", "Ottawa", "2026-03-25"));
-            db.eventDao().insert(new EventEntity("Startup Pitch Night", "Pitch your startup idea", "Ottawa", "2026-03-28"));
-            db.eventDao().insert(new EventEntity("Music Festival Meetup", "Meet before the festival", "Toronto", "2026-04-02"));
-            db.eventDao().insert(new EventEntity("Art Walk", "Explore local galleries", "Toronto", "2026-04-05"));
-            db.eventDao().insert(new EventEntity("Language Exchange", "Practice languages together", "Montreal", "2026-04-10"));
+            db.eventDao().insert(new EventEntity(
+                    "Tech Meetup",
+                    "A meetup for developers",
+                    "Ottawa",
+                    "2026-03-25",
+                    "06:00 PM",
+                    "Downtown Hub",
+                    50,
+                    false,
+                    "Tech,Networking"
+            ));
+            db.eventDao().insert(new EventEntity(
+                    "Startup Pitch Night",
+                    "Pitch your startup idea",
+                    "Ottawa",
+                    "2026-03-28",
+                    "07:30 PM",
+                    "Innovation Centre",
+                    80,
+                    false,
+                    "Tech,Networking"
+            ));
+
+            db.eventDao().insert(new EventEntity(
+                    "Music Festival Meetup",
+                    "Meet before the festival",
+                    "Toronto",
+                    "2026-04-02",
+                    "05:00 PM",
+                    "Harbourfront",
+                    120,
+                    false,
+                    "Music,Art"
+            ));
+
+            db.eventDao().insert(new EventEntity(
+                    "Art Walk",
+                    "Explore local galleries",
+                    "Toronto",
+                    "2026-04-05",
+                    "01:00 PM",
+                    "Queen Street West",
+                    40,
+                    false,
+                    "Art,Culture"
+            ));
+
+            db.eventDao().insert(new EventEntity(
+                    "Language Exchange",
+                    "Practice languages together",
+                    "Montreal",
+                    "2026-04-10",
+                    "06:30 PM",
+                    "Old Port Café",
+                    35,
+                    false,
+                    "Networking,Culture"
+            ));
         }
     }
+
 
     private void loadEvents() {
         showLoadingState();
@@ -168,6 +242,14 @@ public class EventBrowsingActivity extends AppCompatActivity {
             filteredEvents.clear();
 
             List<EventEntity> events = db.eventDao().getEventsByCity(selectedCity);
+
+            events.sort((e1, e2) -> {
+                boolean e1Matches = matchesUserInterests(e1, userInterests);
+                boolean e2Matches = matchesUserInterests(e2, userInterests);
+
+                if (e1Matches == e2Matches) return 0;
+                return e1Matches ? -1 : 1;
+            });
 
             if (events == null || events.isEmpty()) {
                 Log.d(EVENT_DEBUG, "No events found for city: " + selectedCity);
@@ -217,5 +299,28 @@ public class EventBrowsingActivity extends AppCompatActivity {
         errorText.setVisibility(View.GONE);
         emptyStateText.setVisibility(View.GONE);
         eventsListView.setVisibility(View.VISIBLE);
+    }
+    private boolean matchesUserInterests(EventEntity event, String userInterests) {
+        if (event == null || event.tags == null || event.tags.trim().isEmpty()) {
+            return false;
+        }
+
+        if (userInterests == null || userInterests.trim().isEmpty()) {
+            return false;
+        }
+
+        String[] eventTags = event.tags.split(",");
+        String[] interests = userInterests.split(",");
+
+        for (String eventTag : eventTags) {
+            String cleanEventTag = eventTag.trim();
+            for (String interest : interests) {
+                if (cleanEventTag.equalsIgnoreCase(interest.trim())) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

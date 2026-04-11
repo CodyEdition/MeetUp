@@ -39,7 +39,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private String originalEmail;
 
-    private final String[] availableTags = {"Tech", "Music", "Art", "Food", "Sports", "Networking"};
+    private final String[] availableTags = {"Tech", "Music", "Art", "Food", "Sports", "Networking", "Culture"};
     private final List<String> selectedInterests = new ArrayList<>();
 
     private TextView interestsText;

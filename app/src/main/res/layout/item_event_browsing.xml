@@ -37,4 +37,14 @@
         android:textColor="@color/accent_light_orange"
         android:textSize="14sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/eventTagItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Tags"
+        android:textColor="@color/text_on_dark"
+        android:textSize="12sp" />
+
 </LinearLayout>
