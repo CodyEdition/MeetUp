@@ -15,6 +15,8 @@ public class UserEntity {
     public String displayName;
     public String bio;
 
+    public String interests;
+
     public UserEntity(String userId, String email, boolean isLoggedIn) {
         this.userId = userId;
         this.email = email;
@@ -22,5 +24,6 @@ public class UserEntity {
         this.lastSelectedCity = "";
         this.displayName = "";
         this.bio = "";
+        this.interests = "";
     }
 }

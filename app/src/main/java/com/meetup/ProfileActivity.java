@@ -22,6 +22,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.meetup.db.AppDatabase;
 import com.meetup.db.UserEntity;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class ProfileActivity extends AppCompatActivity {
 
     private AppDatabase db;
@@ -35,12 +39,21 @@ public class ProfileActivity extends AppCompatActivity {
 
     private String originalEmail;
 
+    private final String[] availableTags = {"Tech", "Music", "Art", "Food", "Sports", "Networking"};
+    private final List<String> selectedInterests = new ArrayList<>();
+
+    private TextView interestsText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_profile);
         SystemUiHelper.applyMeetUpSystemBars(this);
+
+        interestsText = findViewById(R.id.interestsText);
+
+        findViewById(R.id.selectInterestsButton).setOnClickListener(v -> showInterestDialog());
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.profileRoot), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -78,6 +91,15 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         updateAvatarInitials();
+
+        if (currentUser != null && currentUser.interests != null && !currentUser.interests.isEmpty()) {
+            String[] saved = currentUser.interests.split(",");
+            selectedInterests.clear();
+            Collections.addAll(selectedInterests, saved);
+            interestsText.setText(String.join(", ", selectedInterests));
+        } else {
+            interestsText.setText("No interests selected");
+        }
     }
 
     private void updateAvatarInitials() {
@@ -117,6 +139,8 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         db.userDao().updateProfile(currentUser.id, displayName, bio);
+        String interestsString = String.join(",", selectedInterests);
+        db.userDao().updateInterests(currentUser.id, interestsString);
         updateAvatarInitials();
         Toast.makeText(this, R.string.profile_saved, Toast.LENGTH_SHORT).show();
 
@@ -249,5 +273,33 @@ public class ProfileActivity extends AppCompatActivity {
                                         Toast.LENGTH_SHORT).show()))
                 .addOnFailureListener(e -> 
                         Toast.makeText(this, R.string.incorrect_password, Toast.LENGTH_SHORT).show());
+    }
+
+    private void showInterestDialog() {
+        boolean[] checkedItems = new boolean[availableTags.length];
+
+        for (int i = 0; i < availableTags.length; i++) {
+            checkedItems[i] = selectedInterests.contains(availableTags[i]);
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle("Select Interests")
+                .setMultiChoiceItems(availableTags, checkedItems, (dialog, which, isChecked) -> {
+                    if (isChecked) {
+                        if (!selectedInterests.contains(availableTags[which])) {
+                            selectedInterests.add(availableTags[which]);
+                        }
+                    } else {
+                        selectedInterests.remove(availableTags[which]);
+                    }
+                })
+                .setPositiveButton("OK", (dialog, which) -> {
+                    if (selectedInterests.isEmpty()) {
+                        interestsText.setText("No interests selected");
+                    } else {
+                        interestsText.setText(String.join(", ", selectedInterests));
+                    }
+                })
+                .show();
     }
 }

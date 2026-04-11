@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.NumberPicker;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -50,6 +51,12 @@ public class CreateEventActivity extends AppCompatActivity {
     private TextInputEditText eventLocationEditText;
     private TextInputEditText eventMaxAttendeesEditText;
 
+    private final String[] availableTags = {"Tech", "Music", "Art", "Food", "Sports", "Networking"};
+    private final List<String> selectedTags = new ArrayList<>();
+
+    private TextView selectedTagsText;
+
+
     private int selectedHour = -1;
     private int selectedMinute = -1;
 
@@ -74,6 +81,9 @@ public class CreateEventActivity extends AppCompatActivity {
         eventCityLayout = findViewById(R.id.eventCityLayout);
         eventLocationLayout = findViewById(R.id.eventLocationLayout);
         eventMaxAttendeesLayout = findViewById(R.id.eventMaxAttendeesLayout);
+        selectedTagsText = findViewById(R.id.selectedTagsText);
+
+        findViewById(R.id.selectTagsButton).setOnClickListener(v -> showTagSelectionDialog());
 
         eventTitleEditText = findViewById(R.id.eventTitleEditText);
         eventDescriptionEditText = findViewById(R.id.eventDescriptionEditText);
@@ -286,8 +296,8 @@ public class CreateEventActivity extends AppCompatActivity {
             eventMaxAttendeesLayout.setError(getString(R.string.error_attendees_max));
             return;
         }
-
-        EventEntity event = new EventEntity(title, description, city, date, time, location, maxAttendees, false);
+        String selectedTagsString = String.join(",", selectedTags);
+        EventEntity event = new EventEntity(title, description, city, date, time, location, maxAttendees, false, selectedTagsString);
         AppDatabase.getInstance(this).eventDao().insert(event);
 
         Toast.makeText(this, getString(R.string.event_created_success), Toast.LENGTH_SHORT).show();
@@ -321,5 +331,33 @@ public class CreateEventActivity extends AppCompatActivity {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    private void showTagSelectionDialog() {
+        boolean[] checkedItems = new boolean[availableTags.length];
+
+        for (int i = 0; i < availableTags.length; i++) {
+            checkedItems[i] = selectedTags.contains(availableTags[i]);
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle("Select Interest Tags")
+                .setMultiChoiceItems(availableTags, checkedItems, (dialog, which, isChecked) -> {
+                    if (isChecked) {
+                        if (!selectedTags.contains(availableTags[which])) {
+                            selectedTags.add(availableTags[which]);
+                        }
+                    } else {
+                        selectedTags.remove(availableTags[which]);
+                    }
+                })
+                .setPositiveButton("OK", (dialog, which) -> {
+                    if (selectedTags.isEmpty()) {
+                        selectedTagsText.setText("No tags selected");
+                    } else {
+                        selectedTagsText.setText(String.join(", ", selectedTags));
+                    }
+                })
+                .show();
     }
 }

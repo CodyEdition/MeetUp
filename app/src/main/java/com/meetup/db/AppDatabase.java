@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {EventEntity.class, UserEntity.class, CityEntity.class}, version = 7, exportSchema = false)
+@Database(entities = {EventEntity.class, UserEntity.class, CityEntity.class}, version = 8, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static volatile AppDatabase INSTANCE;

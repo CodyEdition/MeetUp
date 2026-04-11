@@ -21,4 +21,7 @@ public interface UserDao {
 
     @Query("UPDATE users SET email = :email WHERE id = :id")
     void updateEmail(int id, String email);
+
+    @Query("UPDATE users SET interests = :interests WHERE id = :userId")
+    void updateInterests(int userId, String interests);
 }

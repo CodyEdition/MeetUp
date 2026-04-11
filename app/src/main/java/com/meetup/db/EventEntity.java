@@ -20,6 +20,8 @@ public class EventEntity { // replaces placeholder
 
     public boolean isRsvped;
 
+    public String tags;
+
     @Ignore
     public EventEntity(String title, String description, String city, String date) {
         this.title = title;
@@ -29,9 +31,10 @@ public class EventEntity { // replaces placeholder
         this.time = "";
         this.location = "";
         this.maxAttendees = 0;
+        this.tags = "";
     }
 
-    public EventEntity(String title, String description, String city, String date, String time, String location, int maxAttendees, boolean isRsvped) {
+    public EventEntity(String title, String description, String city, String date, String time, String location, int maxAttendees, boolean isRsvped,String tags ) {
         this.title = title;
         this.description = description;
         this.city = city;
@@ -40,5 +43,6 @@ public class EventEntity { // replaces placeholder
         this.location = location;
         this.maxAttendees = maxAttendees;
         this.isRsvped = isRsvped;
+        this.tags = tags;
     }
 }
