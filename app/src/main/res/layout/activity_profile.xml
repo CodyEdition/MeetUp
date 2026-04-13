@@ -168,6 +168,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bioLayout" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addCustomInterestButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Add Custom Interest"
+            android:textSize="13sp"
+            android:textColor="@color/accent_orange"
+            app:strokeColor="@color/accent_orange"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            app:layout_constraintTop_toBottomOf="@id/selectInterestsButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <TextView
             android:id="@+id/interestsText"
             android:layout_width="0dp"

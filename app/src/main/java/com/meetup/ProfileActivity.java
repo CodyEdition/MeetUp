@@ -39,8 +39,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     private String originalEmail;
 
-    private final String[] availableTags = {"Tech", "Music", "Art", "Food", "Sports", "Networking", "Culture"};
+    private final List<String> availableTags = new ArrayList<>();
     private final List<String> selectedInterests = new ArrayList<>();
+
 
     private TextView interestsText;
 
@@ -50,6 +51,14 @@ public class ProfileActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_profile);
         SystemUiHelper.applyMeetUpSystemBars(this);
+        findViewById(R.id.addCustomInterestButton).setOnClickListener(v -> showAddCustomInterestDialog());
+
+        availableTags.add("Tech");
+        availableTags.add("Music");
+        availableTags.add("Art");
+        availableTags.add("Food");
+        availableTags.add("Sports");
+        availableTags.add("Networking");
 
         interestsText = findViewById(R.id.interestsText);
 
@@ -274,30 +283,72 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void showInterestDialog() {
-        boolean[] checkedItems = new boolean[availableTags.length];
+        String[] tagsArray = availableTags.toArray(new String[0]);
+        boolean[] checkedItems = new boolean[tagsArray.length];
 
-        for (int i = 0; i < availableTags.length; i++) {
-            checkedItems[i] = selectedInterests.contains(availableTags[i]);
+        for (int i = 0; i < tagsArray.length; i++) {
+            checkedItems[i] = selectedInterests.contains(tagsArray[i]);
         }
 
         new AlertDialog.Builder(this)
-                .setTitle(R.string.select_interests_label)
-                .setMultiChoiceItems(availableTags, checkedItems, (dialog, which, isChecked) -> {
+                .setTitle("Select Interests")
+                .setMultiChoiceItems(tagsArray, checkedItems, (dialog, which, isChecked) -> {
                     if (isChecked) {
-                        if (!selectedInterests.contains(availableTags[which])) {
-                            selectedInterests.add(availableTags[which]);
+                        if (!selectedInterests.contains(tagsArray[which])) {
+                            selectedInterests.add(tagsArray[which]);
                         }
                     } else {
-                        selectedInterests.remove(availableTags[which]);
+                        selectedInterests.remove(tagsArray[which]);
                     }
                 })
-                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                .setPositiveButton("OK", (dialog, which) -> {
                     if (selectedInterests.isEmpty()) {
-                        interestsText.setText(R.string.no_interests_selected);
+                        interestsText.setText("No interests selected");
                     } else {
                         interestsText.setText(String.join(", ", selectedInterests));
                     }
                 })
+                .show();
+    }
+    private void showAddCustomInterestDialog() {
+        final EditText input = new EditText(this);
+        input.setHint("Enter new interest tag");
+
+        new AlertDialog.Builder(this)
+                .setTitle("Add Custom Interest")
+                .setView(input)
+                .setPositiveButton("Add", (dialog, which) -> {
+                    String newTag = input.getText().toString().trim();
+
+                    if (newTag.isEmpty()) {
+                        Toast.makeText(this, "Interest tag cannot be empty.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    // Normalize capitalization a little
+                    String formattedTag = newTag.substring(0, 1).toUpperCase() + newTag.substring(1).trim();
+
+                    boolean alreadyExists = false;
+                    for (String tag : availableTags) {
+                        if (tag.equalsIgnoreCase(formattedTag)) {
+                            alreadyExists = true;
+                            formattedTag = tag;
+                            break;
+                        }
+                    }
+
+                    if (!alreadyExists) {
+                        availableTags.add(formattedTag);
+                    }
+
+                    if (!selectedInterests.contains(formattedTag)) {
+                        selectedInterests.add(formattedTag);
+                    }
+
+                    interestsText.setText(String.join(", ", selectedInterests));
+                    Toast.makeText(this, "Custom interest added.", Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton("Cancel", null)
                 .show();
     }
 }
