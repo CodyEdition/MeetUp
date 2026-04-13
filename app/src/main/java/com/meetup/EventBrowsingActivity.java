@@ -19,6 +19,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.meetup.db.AppDatabase;
 import com.meetup.db.EventEntity;
 
@@ -90,6 +91,10 @@ public class EventBrowsingActivity extends AppCompatActivity {
         }
 
         cityTitleText.setText(getString(R.string.events_in_city, selectedCity));
+
+        if (isGuest) {
+            showStyledMessage("Guest mode is active. Sign in to RSVP or create events.");
+        }
 
         setupFilterButton();
         setupAdapter();
@@ -214,7 +219,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
         View createButton = findViewById(R.id.createEventButton);
         createButton.setOnClickListener(v -> {
             if (isGuest) {
-                Toast.makeText(this, R.string.guest_cannot_create_events, Toast.LENGTH_SHORT).show();
+                showStyledMessage("Guest mode is active. Sign in to create events.");
                 return;
             }
 
@@ -387,6 +392,14 @@ public class EventBrowsingActivity extends AppCompatActivity {
         emptyStateText.setVisibility(View.GONE);
         eventsListView.setVisibility(View.VISIBLE);
         swipeRefreshLayout.setVisibility(View.VISIBLE);
+    }
+
+    private void showStyledMessage(String message) {
+        View rootView = findViewById(R.id.eventBrowsingMain);
+        Snackbar snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG);
+        snackbar.setBackgroundTint(ContextCompat.getColor(this, R.color.accent_orange));
+        snackbar.setTextColor(ContextCompat.getColor(this, R.color.background_dark));
+        snackbar.show();
     }
 
     private boolean matchesUserInterests(EventEntity event, String userInterests) {
