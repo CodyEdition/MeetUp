@@ -52,9 +52,8 @@ public class EventBrowsingActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_event_browsing);
         SystemUiHelper.applyMeetUpSystemBars(this);
-        isGuest = getIntent().getBooleanExtra(LoginActivity.EXTRA_IS_GUEST, false);
-        filterInterestButton = findViewById(R.id.filterInterestButton);
 
+        isGuest = getIntent().getBooleanExtra(LoginActivity.EXTRA_IS_GUEST, false);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.eventBrowsingMain), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -68,7 +67,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
         emptyStateText = findViewById(R.id.emptyStateText);
         eventsListView = findViewById(R.id.eventsListView);
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
-        TextView filterInterestButton = findViewById(R.id.filterInterestButton);
+        filterInterestButton = findViewById(R.id.filterInterestButton);
 
         swipeRefreshLayout.setColorSchemeResources(R.color.accent_orange);
         swipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.background_dark);
@@ -76,28 +75,6 @@ public class EventBrowsingActivity extends AppCompatActivity {
             Log.d(EVENT_DEBUG, "Swipe refresh triggered for city: " + selectedCity);
             refreshEvents();
         });
-
-        if (isGuest) {
-            filterInterestButton.setVisibility(View.GONE);
-        } else {
-            filterInterestButton.setOnClickListener(v -> {
-
-                if (userInterests == null || userInterests.trim().isEmpty()) {
-                    Toast.makeText(this, "No interests set in your profile.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                filterByInterestOnly = !filterByInterestOnly;
-
-                filterInterestButton.setText(
-                        filterByInterestOnly
-                                ? "Show All Events"
-                                : "Show Matching Interests Only"
-                );
-
-                loadEvents();
-            });
-        }
 
         db = AppDatabase.getInstance(this);
 
@@ -107,12 +84,54 @@ public class EventBrowsingActivity extends AppCompatActivity {
 
         selectedCity = getIntent().getStringExtra("selected_city");
         if (selectedCity == null || selectedCity.trim().isEmpty()) {
-            selectedCity = getString(R.string.unknown_city);
+            Toast.makeText(this, "City not selected. Returning to home.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
         }
 
         cityTitleText.setText(getString(R.string.events_in_city, selectedCity));
 
-        adapter = new ArrayAdapter<>(this, 0, filteredEvents) {
+        setupFilterButton();
+        setupAdapter();
+        setupClickListeners();
+
+        seedSampleDataIfNeeded();
+        loadEvents();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(EVENT_DEBUG, "onResume triggered, reloading events for city: " + selectedCity);
+        loadEvents();
+    }
+
+    private void setupFilterButton() {
+        if (isGuest) {
+            filterInterestButton.setVisibility(View.GONE);
+            return;
+        }
+
+        filterInterestButton.setOnClickListener(v -> {
+            if (userInterests == null || userInterests.trim().isEmpty()) {
+                Toast.makeText(this, "No interests set in your profile.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            filterByInterestOnly = !filterByInterestOnly;
+
+            filterInterestButton.setText(
+                    filterByInterestOnly
+                            ? "Show All Events"
+                            : "Show Matching Interests Only"
+            );
+
+            loadEvents();
+        });
+    }
+
+    private void setupAdapter() {
+        adapter = new ArrayAdapter<EventEntity>(this, 0, filteredEvents) {
             @NonNull
             @Override
             public View getView(int position, View convertView, @NonNull ViewGroup parent) {
@@ -126,16 +145,13 @@ public class EventBrowsingActivity extends AppCompatActivity {
                 TextView titleText = view.findViewById(R.id.eventTitleItem);
                 TextView metaText = view.findViewById(R.id.eventMetaItem);
                 TextView rsvpText = view.findViewById(R.id.eventRsvpItem);
-
                 TextView tagText = view.findViewById(R.id.eventTagItem);
                 TextView otherTagsText = view.findViewById(R.id.eventOtherTagsItem);
                 View tagsContainer = view.findViewById(R.id.tagsContainer);
 
-
                 if (event != null) {
                     titleText.setText(event.title);
                     metaText.setText(getString(R.string.event_date_city, event.date, event.city));
-
 
                     if (event.isRsvped) {
                         rsvpText.setText(R.string.status_joined);
@@ -144,7 +160,6 @@ public class EventBrowsingActivity extends AppCompatActivity {
                         rsvpText.setText(R.string.status_not_joined);
                         rsvpText.setTextColor(ContextCompat.getColor(EventBrowsingActivity.this, R.color.text_on_dark));
                     }
-
 
                     if (event.tags != null && !event.tags.trim().isEmpty()) {
                         String matchingTags = getMatchingTags(event, userInterests);
@@ -166,17 +181,21 @@ public class EventBrowsingActivity extends AppCompatActivity {
                             otherTagsText.setText(event.tags);
                             otherTagsText.setVisibility(View.VISIBLE);
                         }
+
                         tagsContainer.setVisibility(View.VISIBLE);
                     } else {
                         tagsContainer.setVisibility(View.GONE);
                     }
                 }
+
                 return view;
             }
         };
 
         eventsListView.setAdapter(adapter);
+    }
 
+    private void setupClickListeners() {
         eventsListView.setOnItemClickListener((parent, view, position, id) -> {
             EventEntity selectedEvent = filteredEvents.get(position);
 
@@ -208,17 +227,6 @@ public class EventBrowsingActivity extends AppCompatActivity {
         if (isGuest) {
             createButton.setVisibility(View.GONE);
         }
-
-        seedSampleDataIfNeeded();
-        loadEvents();
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(EVENT_DEBUG, "onResume triggered, reloading events for city: " + selectedCity);
-        loadEvents();
     }
 
     private void seedSampleDataIfNeeded() {
@@ -236,6 +244,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
                     false,
                     "Tech, Networking"
             ));
+
             db.eventDao().insert(new EventEntity(
                     "Startup Pitch Night",
                     "Pitch your startup idea",
@@ -286,7 +295,6 @@ public class EventBrowsingActivity extends AppCompatActivity {
         }
     }
 
-
     private void loadEvents() {
         showLoadingState();
         Log.d(EVENT_DEBUG, "Loading events for city: " + selectedCity);
@@ -299,16 +307,18 @@ public class EventBrowsingActivity extends AppCompatActivity {
             if (events == null || events.isEmpty()) {
                 Log.d(EVENT_DEBUG, "No events found for city: " + selectedCity);
                 adapter.notifyDataSetChanged();
-                showEmptyState(getString(R.string.no_events));
+                showEmptyState("No events found in " + selectedCity);
+                Toast.makeText(this, "No events available", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Sort matching events first
             events.sort((e1, e2) -> {
                 boolean e1Matches = matchesUserInterests(e1, userInterests);
                 boolean e2Matches = matchesUserInterests(e2, userInterests);
 
-                if (e1Matches == e2Matches) return 0;
+                if (e1Matches == e2Matches) {
+                    return 0;
+                }
                 return e1Matches ? -1 : 1;
             });
 
@@ -334,6 +344,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(EVENT_DEBUG, "Error loading events", e);
+            Toast.makeText(this, "Error loading events", Toast.LENGTH_SHORT).show();
             showErrorState();
         }
     }
@@ -343,13 +354,12 @@ public class EventBrowsingActivity extends AppCompatActivity {
         swipeRefreshLayout.setRefreshing(false);
     }
 
-//
-
     private void showLoadingState() {
         loadingText.setText(R.string.loading_events);
         loadingText.setVisibility(View.VISIBLE);
         errorText.setVisibility(View.GONE);
         emptyStateText.setVisibility(View.GONE);
+        eventsListView.setVisibility(View.GONE);
         swipeRefreshLayout.setVisibility(View.GONE);
     }
 
@@ -358,8 +368,10 @@ public class EventBrowsingActivity extends AppCompatActivity {
         errorText.setText(R.string.something_went_wrong);
         errorText.setVisibility(View.VISIBLE);
         emptyStateText.setVisibility(View.GONE);
+        eventsListView.setVisibility(View.GONE);
         swipeRefreshLayout.setVisibility(View.GONE);
     }
+
     private void showEmptyState(String message) {
         loadingText.setVisibility(View.GONE);
         errorText.setVisibility(View.GONE);
@@ -369,13 +381,14 @@ public class EventBrowsingActivity extends AppCompatActivity {
         swipeRefreshLayout.setVisibility(View.GONE);
     }
 
-
     private void showListState() {
         loadingText.setVisibility(View.GONE);
         errorText.setVisibility(View.GONE);
         emptyStateText.setVisibility(View.GONE);
+        eventsListView.setVisibility(View.VISIBLE);
         swipeRefreshLayout.setVisibility(View.VISIBLE);
     }
+
     private boolean matchesUserInterests(EventEntity event, String userInterests) {
         if (event == null || event.tags == null || event.tags.trim().isEmpty()) {
             return false;
