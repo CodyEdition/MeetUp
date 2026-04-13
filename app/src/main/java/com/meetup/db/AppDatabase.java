@@ -25,7 +25,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                     "meetup_db"
                             )
                             .allowMainThreadQueries()
-                            .fallbackToDestructiveMigration()
+                            .fallbackToDestructiveMigration(true)
                             .build();
                 }
             }

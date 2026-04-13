@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Layer 1: Dark base -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="linear"
+                android:angle="90"
+                android:startColor="#0A0909"
+                android:endColor="#1a1208" />
+            <corners
+                android:bottomLeftRadius="24dp"
+                android:bottomRightRadius="24dp" />
+        </shape>
+    </item>
+
+    <!-- Layer 2: Main Orange Glow -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="linear"
+                android:angle="90"
+                android:startColor="#CCFFA900"
+                android:centerColor="#33FFA900"
+                android:endColor="#00000000"
+                android:centerY="0.15" />
+            <corners
+                android:bottomLeftRadius="24dp"
+                android:bottomRightRadius="24dp" />
+        </shape>
+    </item>
+
+    <!-- Layer 3: Secondary Lighter Glow -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="linear"
+                android:angle="90"
+                android:startColor="#66FFD582"
+                android:centerColor="#15FFD582"
+                android:endColor="#00000000"
+                android:centerY="0.25" />
+            <corners
+                android:bottomLeftRadius="24dp"
+                android:bottomRightRadius="24dp" />
+        </shape>
+    </item>
+
+    <!-- Layer 4: White Edge Highlight -->
+    <item android:top="125dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="linear"
+                android:angle="90"
+                android:startColor="#4DFFFFFF"
+                android:endColor="#00000000" />
+            <corners
+                android:bottomLeftRadius="24dp"
+                android:bottomRightRadius="24dp" />
+        </shape>
+    </item>
+
+</layer-list>

@@ -155,7 +155,7 @@ public class CreateEventActivity extends AppCompatActivity {
             cities.add(city.cityName);
         }
 
-        // Use custom item_dropdown to ensure black text color
+        // Use custom item_dropdown to ensure black text colour
         ArrayAdapter<String> cityAdapter = new ArrayAdapter<>(this, R.layout.item_dropdown, cities);
         eventCityDropdown.setAdapter(cityAdapter);
     }
@@ -341,7 +341,7 @@ public class CreateEventActivity extends AppCompatActivity {
         }
 
         new AlertDialog.Builder(this)
-                .setTitle("Select Interest Tags")
+                .setTitle(R.string.select_interest_tags_label)
                 .setMultiChoiceItems(availableTags, checkedItems, (dialog, which, isChecked) -> {
                     if (isChecked) {
                         if (!selectedTags.contains(availableTags[which])) {
@@ -351,9 +351,9 @@ public class CreateEventActivity extends AppCompatActivity {
                         selectedTags.remove(availableTags[which]);
                     }
                 })
-                .setPositiveButton("OK", (dialog, which) -> {
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     if (selectedTags.isEmpty()) {
-                        selectedTagsText.setText("No tags selected");
+                        selectedTagsText.setText(R.string.no_tags_selected);
                     } else {
                         selectedTagsText.setText(String.join(", ", selectedTags));
                     }

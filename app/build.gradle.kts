@@ -42,6 +42,7 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.recyclerview)
+    implementation(libs.swiperefreshlayout)
 
     // SQLite Room
     implementation(libs.room.runtime)

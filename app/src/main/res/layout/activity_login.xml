@@ -15,6 +15,11 @@
         android:scaleType="centerCrop"
         android:src="@drawable/map_decal" />
 
+    <!-- Grain Overlay -->
+    <com.meetup.views.GrainOverlayView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <LinearLayout
         android:id="@+id/loginContent"
         android:layout_width="match_parent"
@@ -149,7 +154,7 @@
                 android:layout_marginTop="16dp"
                 android:backgroundTint="@color/accent_orange"
                 android:fontFamily="sans-serif-medium"
-                android:text="Continue as Guest"
+                android:text="@string/continue_as_guest"
                 android:textColor="@color/black" />
         </LinearLayout>
     </LinearLayout>

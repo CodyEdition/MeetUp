@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         TextView welcomeText = findViewById(R.id.welcomeText);
 
         if (isGuest) {
-            welcomeText.setText("Welcome, Guest");
+            welcomeText.setText(R.string.welcome_guest);
             findViewById(R.id.profileAvatarButton).setVisibility(View.GONE);
         } else if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
@@ -201,7 +201,8 @@ public class MainActivity extends AppCompatActivity {
             String displayName = user.displayName;
             String[] parts = displayName.split("\\s+");
             if (parts.length >= 2) {
-                initials = (parts[0].substring(0, 1) + parts[1].substring(0, 1)).toUpperCase();
+                initials = String.valueOf(Character.toUpperCase(parts[0].charAt(0))) 
+                        + Character.toUpperCase(parts[1].charAt(0));
             } else {
                 initials = displayName.substring(0, Math.min(2, displayName.length())).toUpperCase();
             }

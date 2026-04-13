@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Ruled paper: vertical margin line from card start; content starts after line + gap -->
+    <dimen name="lined_paper_margin_line_x">28dp</dimen>
+    <dimen name="lined_paper_content_inset_start">40dp</dimen>
+
+    <dimen name="lined_paper_list_line_step">28dp</dimen>
+    <dimen name="lined_paper_list_first_rule">40dp</dimen>
+
+    <dimen name="lined_paper_desc_line_step">30dp</dimen>
+    <dimen name="lined_paper_desc_first_rule">44dp</dimen>
+
+    <dimen name="lined_paper_details_line_step">40dp</dimen>
+    <dimen name="lined_paper_details_first_rule">56dp</dimen>
+
+    <dimen name="lined_paper_tags_line_step">40dp</dimen>
+    <dimen name="lined_paper_tags_first_rule">56dp</dimen>
+</resources>

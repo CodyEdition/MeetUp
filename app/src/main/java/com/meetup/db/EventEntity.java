@@ -10,17 +10,17 @@ public class EventEntity { // replaces placeholder
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    public String title;
-    public String description;
-    public String city;
-    public String date;
-    public String time;
-    public String location;
-    public int maxAttendees;
+    public final String title;
+    public final String description;
+    public final String city;
+    public final String date;
+    public final String time;
+    public final String location;
+    public final int maxAttendees;
 
     public boolean isRsvped;
 
-    public String tags;
+    public final String tags;
 
     @Ignore
     public EventEntity(String title, String description, String city, String date) {

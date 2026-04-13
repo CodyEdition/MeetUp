@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/profileRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_dark"
-    android:fillViewport="true"
     tools:context=".ProfileActivity">
+
+    <!-- Grain Overlay -->
+    <com.meetup.views.GrainOverlayView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ScrollView
+        android:id="@+id/profileRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -153,7 +162,7 @@
             android:layout_marginEnd="32dp"
             android:backgroundTint="@color/accent_orange"
             android:fontFamily="sans-serif-medium"
-            android:text="Select Interests"
+            android:text="@string/select_interests_label"
             android:textColor="@color/text_on_accent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -167,7 +176,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:gravity="center"
-            android:text="No interests selected"
+            android:text="@string/no_interests_selected"
             android:textColor="@color/text_on_dark"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -208,4 +217,7 @@
             app:layout_constraintTop_toBottomOf="@id/changePasswordButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+
+    </ScrollView>
+
+</FrameLayout>

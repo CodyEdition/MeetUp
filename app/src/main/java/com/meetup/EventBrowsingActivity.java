@@ -13,9 +13,11 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.meetup.db.AppDatabase;
 import com.meetup.db.EventEntity;
@@ -31,6 +33,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
     private TextView errorText;
     private TextView emptyStateText;
     private ListView eventsListView;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private AppDatabase db;
     private String selectedCity;
@@ -59,6 +62,14 @@ public class EventBrowsingActivity extends AppCompatActivity {
         errorText = findViewById(R.id.errorText);
         emptyStateText = findViewById(R.id.emptyStateText);
         eventsListView = findViewById(R.id.eventsListView);
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.accent_orange);
+        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.background_dark);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            Log.d(EVENT_DEBUG, "Swipe refresh triggered for city: " + selectedCity);
+            refreshEvents();
+        });
 
         db = AppDatabase.getInstance(this);
 
@@ -68,10 +79,10 @@ public class EventBrowsingActivity extends AppCompatActivity {
 
         selectedCity = getIntent().getStringExtra("selected_city");
         if (selectedCity == null || selectedCity.trim().isEmpty()) {
-            selectedCity = "Unknown City";
+            selectedCity = getString(R.string.unknown_city);
         }
 
-        cityTitleText.setText(getString(R.string.events_in) + selectedCity);
+        cityTitleText.setText(getString(R.string.events_in_city, selectedCity));
 
         adapter = new ArrayAdapter<>(this, 0, filteredEvents) {
             @NonNull
@@ -89,32 +100,46 @@ public class EventBrowsingActivity extends AppCompatActivity {
                 TextView rsvpText = view.findViewById(R.id.eventRsvpItem);
 
                 TextView tagText = view.findViewById(R.id.eventTagItem);
+                TextView otherTagsText = view.findViewById(R.id.eventOtherTagsItem);
+                View tagsContainer = view.findViewById(R.id.tagsContainer);
 
                 if (event != null) {
                     titleText.setText(event.title);
-                    metaText.setText(event.date + " • " + event.city);
+                    metaText.setText(getString(R.string.event_date_city, event.date, event.city));
 
 
                     if (event.isRsvped) {
                         rsvpText.setText(R.string.status_joined);
-                        rsvpText.setTextColor(getResources().getColor(R.color.accent_orange));
+                        rsvpText.setTextColor(ContextCompat.getColor(EventBrowsingActivity.this, R.color.accent_orange));
                     } else {
                         rsvpText.setText(R.string.status_not_joined);
-                        rsvpText.setTextColor(getResources().getColor(R.color.text_on_dark));
+                        rsvpText.setTextColor(ContextCompat.getColor(EventBrowsingActivity.this, R.color.text_on_dark));
                     }
 
 
                     if (event.tags != null && !event.tags.trim().isEmpty()) {
-                        if (matchesUserInterests(event, userInterests)) {
-                            tagText.setText("🔥 Matching: " + event.tags);
-                            tagText.setTextColor(getResources().getColor(R.color.accent_orange));
+                        String matchingTags = getMatchingTags(event, userInterests);
+                        String nonMatchingTags = getNonMatchingTags(event, userInterests);
+
+                        if (!matchingTags.isEmpty()) {
+                            tagText.setText(getString(R.string.tags_matching_prefix, matchingTags));
+                            tagText.setTextColor(ContextCompat.getColor(EventBrowsingActivity.this, R.color.accent_orange));
+                            tagText.setVisibility(View.VISIBLE);
+
+                            if (!nonMatchingTags.isEmpty()) {
+                                otherTagsText.setText(getString(R.string.tags_other_prefix, nonMatchingTags));
+                                otherTagsText.setVisibility(View.VISIBLE);
+                            } else {
+                                otherTagsText.setVisibility(View.GONE);
+                            }
                         } else {
-                            tagText.setText("Tags: " + event.tags);
-                            tagText.setTextColor(getResources().getColor(R.color.text_on_dark));
+                            tagText.setVisibility(View.GONE);
+                            otherTagsText.setText(event.tags);
+                            otherTagsText.setVisibility(View.VISIBLE);
                         }
-                        tagText.setVisibility(View.VISIBLE);
+                        tagsContainer.setVisibility(View.VISIBLE);
                     } else {
-                        tagText.setVisibility(View.GONE);
+                        tagsContainer.setVisibility(View.GONE);
                     }
                 }
                 return view;
@@ -133,16 +158,15 @@ public class EventBrowsingActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.reloadButton).setOnClickListener(v -> {
-            loadingText.setText(R.string.refreshing);
             Log.d(EVENT_DEBUG, "Manual reload triggered for city: " + selectedCity);
-            loadEvents();
-            Toast.makeText(EventBrowsingActivity.this, "Events refreshed", Toast.LENGTH_SHORT).show();
+            swipeRefreshLayout.setRefreshing(true);
+            refreshEvents();
         });
 
-        findViewById(R.id.createEventButton).setOnClickListener(v -> {
-
+        View createButton = findViewById(R.id.createEventButton);
+        createButton.setOnClickListener(v -> {
             if (isGuest) {
-                Toast.makeText(this, "Guest users cannot create events. Please sign in.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.guest_cannot_create_events, Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -151,7 +175,6 @@ public class EventBrowsingActivity extends AppCompatActivity {
             intent.putExtra(LoginActivity.EXTRA_IS_GUEST, false);
             startActivity(intent);
         });
-        View createButton = findViewById(R.id.createEventButton);
 
         if (isGuest) {
             createButton.setVisibility(View.GONE);
@@ -181,7 +204,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
                     "Downtown Hub",
                     50,
                     false,
-                    "Tech,Networking"
+                    "Tech, Networking"
             ));
             db.eventDao().insert(new EventEntity(
                     "Startup Pitch Night",
@@ -192,7 +215,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
                     "Innovation Centre",
                     80,
                     false,
-                    "Tech,Networking"
+                    "Tech, Networking"
             ));
 
             db.eventDao().insert(new EventEntity(
@@ -204,7 +227,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
                     "Harbourfront",
                     120,
                     false,
-                    "Music,Art"
+                    "Music, Art"
             ));
 
             db.eventDao().insert(new EventEntity(
@@ -216,7 +239,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
                     "Queen Street West",
                     40,
                     false,
-                    "Art,Culture"
+                    "Art, Culture"
             ));
 
             db.eventDao().insert(new EventEntity(
@@ -228,7 +251,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
                     "Old Port Café",
                     35,
                     false,
-                    "Networking,Culture"
+                    "Networking, Culture"
             ));
         }
     }
@@ -236,6 +259,15 @@ public class EventBrowsingActivity extends AppCompatActivity {
 
     private void loadEvents() {
         showLoadingState();
+        doLoadEvents();
+    }
+
+    private void refreshEvents() {
+        showListState();
+        doLoadEvents();
+    }
+
+    private void doLoadEvents() {
         Log.d(EVENT_DEBUG, "Loading events for city: " + selectedCity);
 
         try {
@@ -247,8 +279,14 @@ public class EventBrowsingActivity extends AppCompatActivity {
                 boolean e1Matches = matchesUserInterests(e1, userInterests);
                 boolean e2Matches = matchesUserInterests(e2, userInterests);
 
-                if (e1Matches == e2Matches) return 0;
-                return e1Matches ? -1 : 1;
+                if (e1Matches != e2Matches) {
+                    return e1Matches ? -1 : 1;
+                }
+                
+                // Secondary sort by date 
+                String date1 = e1.date != null ? e1.date : "";
+                String date2 = e2.date != null ? e2.date : "";
+                return date1.compareTo(date2);
             });
 
             if (events == null || events.isEmpty()) {
@@ -267,6 +305,8 @@ public class EventBrowsingActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e(EVENT_DEBUG, "Error loading events", e);
             showErrorState();
+        } finally {
+            swipeRefreshLayout.setRefreshing(false);
         }
     }
 
@@ -275,7 +315,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
         loadingText.setVisibility(View.VISIBLE);
         errorText.setVisibility(View.GONE);
         emptyStateText.setVisibility(View.GONE);
-        eventsListView.setVisibility(View.GONE);
+        swipeRefreshLayout.setVisibility(View.GONE);
     }
 
     private void showErrorState() {
@@ -283,7 +323,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
         errorText.setText(R.string.something_went_wrong);
         errorText.setVisibility(View.VISIBLE);
         emptyStateText.setVisibility(View.GONE);
-        eventsListView.setVisibility(View.GONE);
+        swipeRefreshLayout.setVisibility(View.GONE);
     }
 
     private void showEmptyState() {
@@ -291,14 +331,14 @@ public class EventBrowsingActivity extends AppCompatActivity {
         errorText.setVisibility(View.GONE);
         emptyStateText.setText(R.string.no_events);
         emptyStateText.setVisibility(View.VISIBLE);
-        eventsListView.setVisibility(View.GONE);
+        swipeRefreshLayout.setVisibility(View.GONE);
     }
 
     private void showListState() {
         loadingText.setVisibility(View.GONE);
         errorText.setVisibility(View.GONE);
         emptyStateText.setVisibility(View.GONE);
-        eventsListView.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
     }
     private boolean matchesUserInterests(EventEntity event, String userInterests) {
         if (event == null || event.tags == null || event.tags.trim().isEmpty()) {
@@ -322,5 +362,65 @@ public class EventBrowsingActivity extends AppCompatActivity {
         }
 
         return false;
+    }
+
+    private String getMatchingTags(EventEntity event, String userInterests) {
+        if (event == null || event.tags == null || event.tags.trim().isEmpty()) {
+            return "";
+        }
+
+        if (userInterests == null || userInterests.trim().isEmpty()) {
+            return "";
+        }
+
+        String[] eventTags = event.tags.split(",");
+        String[] interests = userInterests.split(",");
+        List<String> matchingTags = new ArrayList<>();
+
+        for (String eventTag : eventTags) {
+            String cleanEventTag = eventTag.trim();
+            for (String interest : interests) {
+                if (cleanEventTag.equalsIgnoreCase(interest.trim())) {
+                    matchingTags.add(cleanEventTag);
+                    break;
+                }
+            }
+        }
+
+        return String.join(", ", matchingTags);
+    }
+
+    private String getNonMatchingTags(EventEntity event, String userInterests) {
+        if (event == null || event.tags == null || event.tags.trim().isEmpty()) {
+            return "";
+        }
+
+        String[] eventTags = event.tags.split(",");
+        List<String> nonMatchingTags = new ArrayList<>();
+
+        if (userInterests == null || userInterests.trim().isEmpty()) {
+            for (String eventTag : eventTags) {
+                nonMatchingTags.add(eventTag.trim());
+            }
+            return String.join(", ", nonMatchingTags);
+        }
+
+        String[] interests = userInterests.split(",");
+
+        for (String eventTag : eventTags) {
+            String cleanEventTag = eventTag.trim();
+            boolean isMatch = false;
+            for (String interest : interests) {
+                if (cleanEventTag.equalsIgnoreCase(interest.trim())) {
+                    isMatch = true;
+                    break;
+                }
+            }
+            if (!isMatch) {
+                nonMatchingTags.add(cleanEventTag);
+            }
+        }
+
+        return String.join(", ", nonMatchingTags);
     }
 }

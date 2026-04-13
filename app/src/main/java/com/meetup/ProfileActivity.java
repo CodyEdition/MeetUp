@@ -98,7 +98,7 @@ public class ProfileActivity extends AppCompatActivity {
             Collections.addAll(selectedInterests, saved);
             interestsText.setText(String.join(", ", selectedInterests));
         } else {
-            interestsText.setText("No interests selected");
+            interestsText.setText(R.string.no_interests_selected);
         }
     }
 
@@ -110,7 +110,8 @@ public class ProfileActivity extends AppCompatActivity {
         if (!displayName.isEmpty()) {
             String[] parts = displayName.split("\\s+");
             if (parts.length >= 2) {
-                initials = (parts[0].substring(0, 1) + parts[1].substring(0, 1)).toUpperCase();
+                initials = String.valueOf(Character.toUpperCase(parts[0].charAt(0))) 
+                        + Character.toUpperCase(parts[1].charAt(0));
             } else {
                 initials = displayName.substring(0, Math.min(2, displayName.length())).toUpperCase();
             }
@@ -168,17 +169,15 @@ public class ProfileActivity extends AppCompatActivity {
                 .setNegativeButton(R.string.cancel, null)
                 .create();
 
-        dialog.setOnShowListener(d -> {
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
-                String password = currentPasswordInput.getText().toString();
-                if (password.isEmpty()) {
-                    Toast.makeText(this, R.string.password_required, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                dialog.dismiss();
-                reauthenticateAndUpdateEmail(password, newEmail);
-            });
-        });
+        dialog.setOnShowListener(d -> dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String password = currentPasswordInput.getText().toString();
+            if (password.isEmpty()) {
+                Toast.makeText(this, R.string.password_required, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            dialog.dismiss();
+            reauthenticateAndUpdateEmail(password, newEmail);
+        }));
 
         dialog.show();
     }
@@ -217,20 +216,18 @@ public class ProfileActivity extends AppCompatActivity {
                 .setNegativeButton(R.string.cancel, null)
                 .create();
 
-        dialog.setOnShowListener(d -> {
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
-                String currentPassword = currentPasswordInput.getText().toString();
-                String newPassword = newPasswordInput.getText().toString();
-                String confirmPassword = confirmPasswordInput.getText().toString();
+        dialog.setOnShowListener(d -> dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String currentPassword = currentPasswordInput.getText().toString();
+            String newPassword = newPasswordInput.getText().toString();
+            String confirmPassword = confirmPasswordInput.getText().toString();
 
-                if (!validatePasswordChange(currentPassword, newPassword, confirmPassword)) {
-                    return;
-                }
+            if (!validatePasswordChange(currentPassword, newPassword, confirmPassword)) {
+                return;
+            }
 
-                dialog.dismiss();
-                changePassword(currentPassword, newPassword);
-            });
-        });
+            dialog.dismiss();
+            changePassword(currentPassword, newPassword);
+        }));
 
         dialog.show();
     }
@@ -245,7 +242,8 @@ public class ProfileActivity extends AppCompatActivity {
             return false;
         }
         if (newPassword.length() < AuthInputValidator.MIN_PASSWORD_LENGTH) {
-            Toast.makeText(this, getString(R.string.password_too_short, AuthInputValidator.MIN_PASSWORD_LENGTH), 
+            Toast.makeText(this, getResources().getQuantityString(R.plurals.password_min_characters, 
+                    AuthInputValidator.MIN_PASSWORD_LENGTH, AuthInputValidator.MIN_PASSWORD_LENGTH), 
                     Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -283,7 +281,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         new AlertDialog.Builder(this)
-                .setTitle("Select Interests")
+                .setTitle(R.string.select_interests_label)
                 .setMultiChoiceItems(availableTags, checkedItems, (dialog, which, isChecked) -> {
                     if (isChecked) {
                         if (!selectedInterests.contains(availableTags[which])) {
@@ -293,9 +291,9 @@ public class ProfileActivity extends AppCompatActivity {
                         selectedInterests.remove(availableTags[which]);
                     }
                 })
-                .setPositiveButton("OK", (dialog, which) -> {
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     if (selectedInterests.isEmpty()) {
-                        interestsText.setText("No interests selected");
+                        interestsText.setText(R.string.no_interests_selected);
                     } else {
                         interestsText.setText(String.join(", ", selectedInterests));
                     }

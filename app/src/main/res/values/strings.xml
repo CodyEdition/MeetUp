@@ -37,9 +37,7 @@
     <string name="max_attendees">Max Attendees</string>
     <string name="back">Back</string>
     <string name="error_required">This field is required</string>
-    <string name="error_date_invalid">Enter a valid date</string>
     <string name="error_date_past">Date cannot be in the past</string>
-    <string name="error_time_invalid">Enter a valid time</string>
     <string name="error_time_past">Time cannot be in the past for today</string>
     <string name="error_attendees_invalid">Enter a valid number</string>
     <string name="error_attendees_min">Must have at least 2 attendees</string>
@@ -49,7 +47,6 @@
     <string name="error">Something went wrong.</string>
     <string name="loading_events">Loading events…</string>
     <string name="refresh">Refresh</string>
-    <string name="events_in">"Events in "</string>
     <string name="status_joined">Status: Joined</string>
     <string name="status_not_joined">Status: Not Joined</string>
     <string name="refreshing">Refreshing…</string>
@@ -74,7 +71,10 @@
     <string name="password_required">Password is required</string>
     <string name="current_password_required">Current password is required</string>
     <string name="new_password_required">New password is required</string>
-    <string name="password_too_short">Password must be at least %1$d characters</string>
+    <plurals name="password_min_characters">
+        <item quantity="one">Password must be at least %1$d character</item>
+        <item quantity="other">Password must be at least %1$d characters</item>
+    </plurals>
     <string name="passwords_dont_match">Passwords do not match</string>
     <string name="profile_saved">Profile saved successfully</string>
     <string name="error_loading_profile">Error loading profile</string>
@@ -89,4 +89,50 @@
     <string name="add_city">+ Add City</string>
     <string name="city_name_hint">City Name (e.g. Vancouver)</string>
     <string name="province_name_hint">Province (e.g. BC)</string>
+    <string name="continue_as_guest">Continue as Guest</string>
+    <string name="welcome_guest">Welcome, Guest</string>
+    <string name="events_in_city">Events in %1$s</string>
+    <string name="event_date_city">%1$s • %2$s</string>
+    <string name="city_format">City: %1$s</string>
+    <string name="date_format">Date: %1$s</string>
+    <string name="sign_in_to_rsvp">Sign in to RSVP for this event.</string>
+    <string name="event_not_found">Event not found</string>
+    <string name="event_load_error">This event could not be loaded.</string>
+    <string name="unavailable">Unavailable</string>
+    <string name="status_rsvpd">Status: You have RSVP\'d for this event.</string>
+    <string name="cancel_rsvp">Cancel RSVP</string>
+    <string name="rsvp_now">RSVP Now</string>
+    <string name="time_separator">:</string>
+
+    <!-- Event Details -->
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="location">Location</string>
+    <string name="city">City</string>
+    <string name="capacity">Capacity</string>
+    <string name="tags">Tags</string>
+    <plurals name="spots_count">
+        <item quantity="one">%1$d spot</item>
+        <item quantity="other">%1$d spots</item>
+    </plurals>
+    <string name="unlimited_spots">Unlimited</string>
+    <string name="created_by_format">Created by: %1$s</string>
+    <string name="add_to_calendar">Add to Calendar</string>
+    <string name="no_tags">No tags</string>
+    <string name="interests">Interests</string>
+    <string name="interests_hint">e.g. Music, Tech, Art</string>
+
+    <!-- Lint: hardcoded text / i18n -->
+    <string name="select_interest_tags_label">Select Interest Tags</string>
+    <string name="no_tags_selected">No tags selected</string>
+    <string name="select_interests_label">Select Interests</string>
+    <string name="no_interests_selected">No interests selected</string>
+    <string name="guest_cannot_create_events">Guest users cannot create events. Please sign in.</string>
+    <string name="rsvp_joined_toast">You have joined this event.</string>
+    <string name="rsvp_cancelled_toast">You have cancelled your RSVP.</string>
+    <string name="time_tbd">TBD</string>
+    <string name="no_calendar_app">No calendar app found</string>
+    <string name="tags_matching_prefix">🔥 %1$s</string>
+    <string name="tags_other_prefix"> • %1$s</string>
+    <string name="unknown_city">Unknown City</string>
 </resources>

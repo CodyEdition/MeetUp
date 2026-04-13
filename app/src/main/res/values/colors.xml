@@ -4,7 +4,8 @@
     <color name="white">#FFFFFFFF</color>
 
     <!-- Theme colours -->
-    <color name="background_dark">#333333</color>
+    <color name="background_dark">#232323</color>
+    <color name="background_login">#060606</color>
     <color name="accent_orange">#FFA900</color>
     <color name="accent_light_orange">#FFD582</color>
     <color name="text_on_dark">#FFFFFFFF</color>

@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/createEventRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_dark"
-    android:fillViewport="true">
+    android:background="@color/background_dark">
+
+    <!-- Grain Overlay -->
+    <com.meetup.views.GrainOverlayView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ScrollView
+        android:id="@+id/createEventRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -130,6 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:hint="@string/city_hub"
+            android:labelFor="@id/eventCityDropdown"
             app:boxStrokeColor="@color/accent_orange"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -205,7 +214,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Select Interest Tags"
+            android:text="@string/select_interest_tags_label"
             android:textColor="@color/text_on_accent"
             android:backgroundTint="@color/accent_orange"
             app:layout_constraintTop_toBottomOf="@id/eventMaxAttendeesLayout"
@@ -217,7 +226,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="No tags selected"
+            android:text="@string/no_tags_selected"
             android:textColor="@color/text_on_dark"
             android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@id/selectTagsButton"
@@ -225,4 +234,7 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+
+    </ScrollView>
+
+</FrameLayout>

@@ -1,102 +1,423 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/eventDetailsRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
     android:background="@color/background_dark">
 
-    <TextView
-        android:id="@+id/detailsTitleText"
+    <!-- Grain Overlay -->
+    <com.meetup.views.GrainOverlayView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="24dp"
-        android:text="@string/event_title"
-        android:textAlignment="center"
-        android:textColor="@color/text_on_dark"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/detailsDescriptionText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:text="@string/event_description"
-        android:textColor="@color/text_on_dark"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/detailsTitleText" />
-
-    <TextView
-        android:id="@+id/detailsCityText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:text="City: Ottawa"
-        android:textColor="@color/accent_light_orange"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/detailsDescriptionText" />
-
-    <TextView
-        android:id="@+id/detailsDateText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:text="Date: 2026-03-25"
-        android:textColor="@color/accent_light_orange"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/detailsCityText" />
-
-    <TextView
-        android:id="@+id/rsvpStatusText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="12dp"
-        android:text="@string/status_not_rsvpd"
-        android:textAlignment="center"
-        android:textColor="@color/text_on_dark"
-        android:textSize="16sp"
-        android:textStyle="italic"
-        app:layout_constraintBottom_toTopOf="@id/rsvpButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/detailsDateText"
-        app:layout_constraintVertical_bias="1" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/rsvpButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/rsvp"
-        android:textColor="@color/text_on_accent"
-        app:backgroundTint="@color/accent_orange"
-        app:cornerRadius="12dp"
+        android:layout_height="0dp"
+        android:elevation="0dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:id="@+id/scrollContent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="false"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomActionSection"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp">
+
+            <!-- Header Banner -->
+            <com.meetup.views.GlowBannerView
+                android:id="@+id/headerBanner"
+                android:layout_width="0dp"
+                android:layout_height="140dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Event Title -->
+            <TextView
+                android:id="@+id/detailsTitleText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:paddingTop="40dp"
+                android:paddingBottom="24dp"
+                android:text="@string/event_title"
+                android:textAlignment="center"
+                android:textColor="@color/text_on_dark"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:shadowColor="#99000000"
+                android:shadowDx="0"
+                android:shadowDy="2"
+                android:shadowRadius="8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Description Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/descriptionCard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:cardBackgroundColor="#444444"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/headerBanner">
+
+                <com.meetup.views.LinedPaperFrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:linedPaperLineSpacing="@dimen/lined_paper_desc_line_step"
+                    app:linedPaperFirstRuleFromTop="@dimen/lined_paper_desc_first_rule"
+                    app:linedPaperMarginFromStart="@dimen/lined_paper_margin_line_x">
+
+                    <TextView
+                        android:id="@+id/detailsDescriptionText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/lined_paper_content_inset_start"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:text="@string/event_description"
+                        android:textColor="@color/text_on_dark"
+                        android:textSize="15sp"
+                        android:textStyle="italic"
+                        android:includeFontPadding="false"
+                        android:lineSpacingMultiplier="1"
+                        android:lineSpacingExtra="8dp" />
+
+                </com.meetup.views.LinedPaperFrameLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Details Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/detailsCard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
+                app:cardBackgroundColor="#444444"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/descriptionCard">
+
+                <com.meetup.views.LinedPaperFrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:linedPaperLineSpacing="@dimen/lined_paper_details_line_step"
+                    app:linedPaperFirstRuleFromTop="@dimen/lined_paper_details_first_rule"
+                    app:linedPaperMarginFromStart="@dimen/lined_paper_margin_line_x">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingStart="@dimen/lined_paper_content_inset_start"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp">
+
+                    <!-- Date Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/lined_paper_details_line_step"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingVertical="8dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="@string/date"
+                            android:src="@drawable/ic_calendar" />
+
+                        <TextView
+                            android:id="@+id/detailsDateText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/text_on_dark"
+                            android:textSize="16sp"
+                            tools:text="2026-04-12" />
+
+                    </LinearLayout>
+
+                    <!-- Time Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/lined_paper_details_line_step"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingVertical="8dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="@string/time"
+                            android:src="@drawable/ic_clock" />
+
+                        <TextView
+                            android:id="@+id/detailsTimeText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/text_on_dark"
+                            android:textSize="16sp"
+                            tools:text="6:00 PM" />
+
+                    </LinearLayout>
+
+                    <!-- Location Row -->
+                    <LinearLayout
+                        android:id="@+id/locationRow"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/lined_paper_details_line_step"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingVertical="8dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="@string/location"
+                            android:src="@drawable/ic_location" />
+
+                        <TextView
+                            android:id="@+id/detailsLocationText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/text_on_dark"
+                            android:textSize="16sp"
+                            tools:text="Downtown Hub" />
+
+                    </LinearLayout>
+
+                    <!-- City Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/lined_paper_details_line_step"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingVertical="8dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="@string/city"
+                            android:src="@drawable/ic_city" />
+
+                        <TextView
+                            android:id="@+id/detailsCityText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/text_on_dark"
+                            android:textSize="16sp"
+                            tools:text="Ottawa" />
+
+                    </LinearLayout>
+
+                    <!-- Capacity Row -->
+                    <LinearLayout
+                        android:id="@+id/capacityRow"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/lined_paper_details_line_step"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingVertical="8dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="@string/capacity"
+                            android:src="@drawable/ic_people" />
+
+                        <TextView
+                            android:id="@+id/detailsCapacityText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/text_on_dark"
+                            android:textSize="16sp"
+                            tools:text="50 spots" />
+
+                    </LinearLayout>
+
+                    </LinearLayout>
+
+                </com.meetup.views.LinedPaperFrameLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Tags Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/tagsCard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
+                app:cardBackgroundColor="#444444"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/detailsCard">
+
+                <com.meetup.views.LinedPaperFrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:linedPaperLineSpacing="@dimen/lined_paper_tags_line_step"
+                    app:linedPaperFirstRuleFromTop="@dimen/lined_paper_tags_first_rule"
+                    app:linedPaperMarginFromStart="@dimen/lined_paper_margin_line_x">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/lined_paper_tags_line_step"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/lined_paper_content_inset_start"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="@string/tags"
+                            android:src="@drawable/ic_tag" />
+
+                        <TextView
+                            android:id="@+id/detailsMatchingTagsText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/accent_orange"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            tools:text="Music" />
+
+                        <TextView
+                            android:id="@+id/detailsOtherTagsText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:textColor="#888888"
+                            android:textSize="14sp"
+                            tools:text=" • Art, Culture" />
+
+                    </LinearLayout>
+
+                </com.meetup.views.LinedPaperFrameLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Created By -->
+            <TextView
+                android:id="@+id/detailsCreatedByText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:textAlignment="center"
+                android:textColor="#888888"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tagsCard"
+                tools:text="Created by: user@email.com" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <!-- Bottom Section -->
+    <LinearLayout
+        android:id="@+id/bottomActionSection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@color/background_dark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- RSVP Status Text -->
+        <TextView
+            android:id="@+id/rsvpStatusText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="@string/status_not_rsvpd"
+            android:textAlignment="center"
+            android:textColor="@color/accent_light_orange"
+            android:textSize="15sp"
+            android:textStyle="italic" />
+
+        <!-- RSVP Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/rsvpButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/rsvp"
+            android:textColor="@color/text_on_accent"
+            app:backgroundTint="@color/accent_orange"
+            app:cornerRadius="12dp" />
+
+        <!-- Add to Calendar Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addToCalendarButton"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/add_to_calendar"
+            android:textColor="@color/accent_orange"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/ic_calendar"
+            app:iconGravity="textStart"
+            app:iconTint="@color/accent_orange"
+            app:strokeColor="@color/accent_orange" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

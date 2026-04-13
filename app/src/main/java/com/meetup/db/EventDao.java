@@ -10,7 +10,7 @@ import java.util.List;
 public interface EventDao { //replaces PlaceholderDao
 
     @Insert
-    long insert(EventEntity event);
+    void insert(EventEntity event);
 
     @Query("SELECT * FROM events")
     List<EventEntity> getAll();

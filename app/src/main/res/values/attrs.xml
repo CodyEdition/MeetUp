@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="LinedPaperFrameLayout">
+        <attr name="linedPaperLineSpacing" format="dimension" />
+        <attr name="linedPaperFirstRuleFromTop" format="dimension" />
+        <attr name="linedPaperMarginFromStart" format="dimension" />
+    </declare-styleable>
+</resources>

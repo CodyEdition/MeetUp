@@ -8,8 +8,8 @@ public class CityEntity {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    public String cityName;
-    public String province;
+    public final String cityName;
+    public final String province;
 
     public CityEntity(String cityName, String province) {
         this.cityName = cityName;

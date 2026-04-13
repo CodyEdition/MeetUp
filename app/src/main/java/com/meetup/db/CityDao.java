@@ -14,7 +14,4 @@ public interface CityDao {
 
     @Query("SELECT * FROM cities")
     List<CityEntity> getAllCities();
-
-    @Query("DELETE FROM cities WHERE cityName = :cityName")
-    void deleteCity(String cityName);
 }
