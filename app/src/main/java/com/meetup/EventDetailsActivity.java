@@ -145,11 +145,11 @@ public class EventDetailsActivity extends AppCompatActivity {
             event.isRsvped = newStatus;
             updateRsvpUi();
 
-            Toast.makeText(
-                    this,
-                    newStatus ? R.string.rsvp_joined_toast : R.string.rsvp_cancelled_toast,
-                    Toast.LENGTH_SHORT
-            ).show();
+            showStyledMessage(
+                    newStatus
+                            ? "You’re in! RSVP confirmed."
+                            : "RSVP canceled."
+            );
 
         } catch (Exception e) {
             Log.e(RSVP_DEBUG, "Error updating RSVP", e);
@@ -307,7 +307,7 @@ public class EventDetailsActivity extends AppCompatActivity {
 
     private void showStyledMessage(String message) {
         View rootView = findViewById(R.id.eventDetailsRoot);
-        Snackbar snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT);
         snackbar.setBackgroundTint(ContextCompat.getColor(this, R.color.accent_orange));
         snackbar.setTextColor(ContextCompat.getColor(this, R.color.background_dark));
         snackbar.show();
