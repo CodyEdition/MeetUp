@@ -35,6 +35,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
     private TextView emptyStateText;
     private ListView eventsListView;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private TextView filterInterestButton;
 
     private AppDatabase db;
     private String selectedCity;
@@ -43,9 +44,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
 
     private boolean isGuest = false;
     private String userInterests = "";
-
     private boolean filterByInterestOnly = false;
-    private TextView filterInterestButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,20 +61,8 @@ public class EventBrowsingActivity extends AppCompatActivity {
             return insets;
         });
 
-        TextView cityTitleText = findViewById(R.id.cityTitleText);
-        loadingText = findViewById(R.id.loadingText);
-        errorText = findViewById(R.id.errorText);
-        emptyStateText = findViewById(R.id.emptyStateText);
-        eventsListView = findViewById(R.id.eventsListView);
-        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
-        filterInterestButton = findViewById(R.id.filterInterestButton);
-
-        swipeRefreshLayout.setColorSchemeResources(R.color.accent_orange);
-        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.background_dark);
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            Log.d(EVENT_DEBUG, "Swipe refresh triggered for city: " + selectedCity);
-            refreshEvents();
-        });
+        bindViews();
+        setupRefresh();
 
         db = AppDatabase.getInstance(this);
 
@@ -90,6 +77,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
             return;
         }
 
+        TextView cityTitleText = findViewById(R.id.cityTitleText);
         cityTitleText.setText(getString(R.string.events_in_city, selectedCity));
 
         if (isGuest) {
@@ -109,6 +97,24 @@ public class EventBrowsingActivity extends AppCompatActivity {
         super.onResume();
         Log.d(EVENT_DEBUG, "onResume triggered, reloading events for city: " + selectedCity);
         loadEvents();
+    }
+
+    private void bindViews() {
+        loadingText = findViewById(R.id.loadingText);
+        errorText = findViewById(R.id.errorText);
+        emptyStateText = findViewById(R.id.emptyStateText);
+        eventsListView = findViewById(R.id.eventsListView);
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        filterInterestButton = findViewById(R.id.filterInterestButton);
+    }
+
+    private void setupRefresh() {
+        swipeRefreshLayout.setColorSchemeResources(R.color.accent_orange);
+        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.background_dark);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            Log.d(EVENT_DEBUG, "Swipe refresh triggered for city: " + selectedCity);
+            refreshEvents();
+        });
     }
 
     private void setupFilterButton() {
@@ -214,6 +220,13 @@ public class EventBrowsingActivity extends AppCompatActivity {
             Log.d(EVENT_DEBUG, "Manual reload triggered for city: " + selectedCity);
             swipeRefreshLayout.setRefreshing(true);
             refreshEvents();
+        });
+
+        View myRsvpButton = findViewById(R.id.myRsvpButton);
+        myRsvpButton.setOnClickListener(v -> {
+            Intent intent = new Intent(EventBrowsingActivity.this, MyRsvpEventsActivity.class);
+            intent.putExtra(LoginActivity.EXTRA_IS_GUEST, isGuest);
+            startActivity(intent);
         });
 
         View createButton = findViewById(R.id.createEventButton);
