@@ -18,6 +18,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.snackbar.Snackbar;
 import com.meetup.db.AppDatabase;
 import com.meetup.db.EventEntity;
 import com.meetup.db.UserEntity;
@@ -99,8 +100,13 @@ public class EventDetailsActivity extends AppCompatActivity {
         addToCalendarButton.setOnClickListener(v -> addEventToCalendar());
 
         if (isGuest) {
-            rsvpButton.setEnabled(false);
+            rsvpButton.setEnabled(true);
+            rsvpButton.setText("Guest Mode");
             rsvpStatusText.setText(R.string.sign_in_to_rsvp);
+
+            rsvpButton.setOnClickListener(v ->
+                    showStyledMessage("Guest mode is active. Sign in to RSVP.")
+            );
         } else {
             rsvpButton.setOnClickListener(v -> handleRsvpClick());
         }
@@ -297,6 +303,14 @@ public class EventDetailsActivity extends AppCompatActivity {
             Log.e(RSVP_DEBUG, "No calendar app available", e);
             Toast.makeText(this, "No calendar app available", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void showStyledMessage(String message) {
+        View rootView = findViewById(R.id.eventDetailsRoot);
+        Snackbar snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG);
+        snackbar.setBackgroundTint(ContextCompat.getColor(this, R.color.accent_orange));
+        snackbar.setTextColor(ContextCompat.getColor(this, R.color.background_dark));
+        snackbar.show();
     }
 
     private void showEventNotFound() {
