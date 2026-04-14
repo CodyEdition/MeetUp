@@ -20,6 +20,7 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.meetup.db.AppDatabase;
+import com.meetup.db.InterestTagEntity;
 import com.meetup.db.UserEntity;
 
 import java.util.ArrayList;
@@ -41,9 +42,11 @@ public class ProfileActivity extends AppCompatActivity {
 
     private final List<String> availableTags = new ArrayList<>();
     private final List<String> selectedInterests = new ArrayList<>();
+    private TextView interestsText;;
 
 
-    private TextView interestsText;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +56,7 @@ public class ProfileActivity extends AppCompatActivity {
         SystemUiHelper.applyMeetUpSystemBars(this);
         findViewById(R.id.addCustomInterestButton).setOnClickListener(v -> showAddCustomInterestDialog());
 
-        availableTags.add("Tech");
-        availableTags.add("Music");
-        availableTags.add("Art");
-        availableTags.add("Food");
-        availableTags.add("Sports");
-        availableTags.add("Networking");
+
 
         interestsText = findViewById(R.id.interestsText);
 
@@ -71,6 +69,8 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         db = AppDatabase.getInstance(this);
+        seedDefaultTagsIfNeeded();
+        loadAvailableTagsFromDb();
         firebaseAuth = FirebaseAuth.getInstance();
 
         displayNameEditText = findViewById(R.id.displayNameEditText);
@@ -282,6 +282,7 @@ public class ProfileActivity extends AppCompatActivity {
                         Toast.makeText(this, R.string.incorrect_password, Toast.LENGTH_SHORT).show());
     }
 
+
     private void showInterestDialog() {
         String[] tagsArray = availableTags.toArray(new String[0]);
         boolean[] checkedItems = new boolean[tagsArray.length];
@@ -302,13 +303,31 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 })
                 .setPositiveButton("OK", (dialog, which) -> {
-                    if (selectedInterests.isEmpty()) {
-                        interestsText.setText("No interests selected");
-                    } else {
-                        interestsText.setText(String.join(", ", selectedInterests));
-                    }
+                    interestsText.setText(
+                            selectedInterests.isEmpty()
+                                    ? getString(R.string.no_interests_selected)
+                                    : String.join(", ", selectedInterests)
+                    );
                 })
                 .show();
+    }
+    private void seedDefaultTagsIfNeeded() {
+        if (db.interestTagDao().getAllTags().isEmpty()) {
+            db.interestTagDao().insertTag(new InterestTagEntity("Tech"));
+            db.interestTagDao().insertTag(new InterestTagEntity("Music"));
+            db.interestTagDao().insertTag(new InterestTagEntity("Art"));
+            db.interestTagDao().insertTag(new InterestTagEntity("Food"));
+            db.interestTagDao().insertTag(new InterestTagEntity("Sports"));
+            db.interestTagDao().insertTag(new InterestTagEntity("Networking"));
+            db.interestTagDao().insertTag(new InterestTagEntity("Culture"));
+        }
+    }
+    private void loadAvailableTagsFromDb() {
+        availableTags.clear();
+        List<InterestTagEntity> tags = db.interestTagDao().getAllTags();
+        for (InterestTagEntity tag : tags) {
+            availableTags.add(tag.name);
+        }
     }
     private void showAddCustomInterestDialog() {
         final EditText input = new EditText(this);
@@ -325,27 +344,33 @@ public class ProfileActivity extends AppCompatActivity {
                         return;
                     }
 
-                    // Normalize capitalization a little
                     String formattedTag = newTag.substring(0, 1).toUpperCase() + newTag.substring(1).trim();
 
-                    boolean alreadyExists = false;
-                    for (String tag : availableTags) {
+                    InterestTagEntity existing = db.interestTagDao().findByName(formattedTag);
+                    if (existing == null) {
+                        db.interestTagDao().insertTag(new InterestTagEntity(formattedTag));
+                    }
+
+                    loadAvailableTagsFromDb();
+
+                    boolean alreadySelected = false;
+                    for (String tag : selectedInterests) {
                         if (tag.equalsIgnoreCase(formattedTag)) {
-                            alreadyExists = true;
-                            formattedTag = tag;
+                            alreadySelected = true;
                             break;
                         }
                     }
 
-                    if (!alreadyExists) {
-                        availableTags.add(formattedTag);
-                    }
-
-                    if (!selectedInterests.contains(formattedTag)) {
+                    if (!alreadySelected) {
                         selectedInterests.add(formattedTag);
                     }
 
-                    interestsText.setText(String.join(", ", selectedInterests));
+                    interestsText.setText(
+                            selectedInterests.isEmpty()
+                                    ? getString(R.string.no_interests_selected)
+                                    : String.join(", ", selectedInterests)
+                    );
+
                     Toast.makeText(this, "Custom interest added.", Toast.LENGTH_SHORT).show();
                 })
                 .setNegativeButton("Cancel", null)

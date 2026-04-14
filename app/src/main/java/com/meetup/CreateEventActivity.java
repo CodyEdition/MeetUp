@@ -25,6 +25,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.meetup.db.AppDatabase;
 import com.meetup.db.CityEntity;
 import com.meetup.db.EventEntity;
+import com.meetup.db.InterestTagEntity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,8 +52,10 @@ public class CreateEventActivity extends AppCompatActivity {
     private TextInputEditText eventLocationEditText;
     private TextInputEditText eventMaxAttendeesEditText;
 
-    private final String[] availableTags = {"Tech", "Music", "Art", "Food", "Sports", "Networking"};
+    private AppDatabase db;
     private final List<String> selectedTags = new ArrayList<>();
+    private final List<String> availableTags = new ArrayList<>();
+
 
     private TextView selectedTagsText;
 
@@ -65,6 +68,7 @@ public class CreateEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_create_event);
+        loadAvailableTagsFromDb();
         SystemUiHelper.applyMeetUpSystemBars(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.createEventRoot), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -334,30 +338,43 @@ public class CreateEventActivity extends AppCompatActivity {
     }
 
     private void showTagSelectionDialog() {
-        boolean[] checkedItems = new boolean[availableTags.length];
+        String[] tagsArray = availableTags.toArray(new String[0]);
+        boolean[] checkedItems = new boolean[tagsArray.length];
 
-        for (int i = 0; i < availableTags.length; i++) {
-            checkedItems[i] = selectedTags.contains(availableTags[i]);
+        for (int i = 0; i < tagsArray.length; i++) {
+            checkedItems[i] = selectedTags.contains(tagsArray[i]);
         }
 
         new AlertDialog.Builder(this)
-                .setTitle(R.string.select_interest_tags_label)
-                .setMultiChoiceItems(availableTags, checkedItems, (dialog, which, isChecked) -> {
+                .setTitle("Select Interest Tags")
+                .setMultiChoiceItems(tagsArray, checkedItems, (dialog, which, isChecked) -> {
                     if (isChecked) {
-                        if (!selectedTags.contains(availableTags[which])) {
-                            selectedTags.add(availableTags[which]);
+                        if (!selectedTags.contains(tagsArray[which])) {
+                            selectedTags.add(tagsArray[which]);
                         }
                     } else {
-                        selectedTags.remove(availableTags[which]);
+                        selectedTags.remove(tagsArray[which]);
                     }
                 })
-                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                    if (selectedTags.isEmpty()) {
-                        selectedTagsText.setText(R.string.no_tags_selected);
-                    } else {
-                        selectedTagsText.setText(String.join(", ", selectedTags));
-                    }
-                })
+                .setPositiveButton("OK", null)
                 .show();
+    }
+    private void seedDefaultTagsIfNeeded() {
+        if (db.interestTagDao().getAllTags().isEmpty()) {
+            db.interestTagDao().insertTag(new InterestTagEntity("Tech"));
+            db.interestTagDao().insertTag(new InterestTagEntity("Music"));
+            db.interestTagDao().insertTag(new InterestTagEntity("Art"));
+            db.interestTagDao().insertTag(new InterestTagEntity("Food"));
+            db.interestTagDao().insertTag(new InterestTagEntity("Sports"));
+            db.interestTagDao().insertTag(new InterestTagEntity("Networking"));
+            db.interestTagDao().insertTag(new InterestTagEntity("Culture"));
+        }
+    }
+    private void loadAvailableTagsFromDb() {
+        availableTags.clear();
+        List<InterestTagEntity> tags = AppDatabase.getInstance(this).interestTagDao().getAllTags();
+        for (InterestTagEntity tag : tags) {
+            availableTags.add(tag.name);
+        }
     }
 }
