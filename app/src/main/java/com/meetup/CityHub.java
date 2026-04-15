@@ -20,4 +20,14 @@ public enum CityHub {
     public String getProvince() {
         return province;
     }
+
+    public static CityHub fromDisplayName(String text) {
+        if (text == null) return null;
+        for (CityHub b : CityHub.values()) {
+            if (b.displayName.equalsIgnoreCase(text)) {
+                return b;
+            }
+        }
+        return null;
+    }
 }
