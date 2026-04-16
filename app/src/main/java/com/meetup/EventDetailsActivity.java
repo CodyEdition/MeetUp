@@ -82,7 +82,7 @@ public class EventDetailsActivity extends AppCompatActivity {
 
             int eventId = getIntent().getIntExtra("event_id", -1);
             if (eventId == -1) {
-                Toast.makeText(this, "Invalid event", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.invalid_event, Toast.LENGTH_SHORT).show();
                 finish();
                 return;
             }
@@ -104,11 +104,11 @@ public class EventDetailsActivity extends AppCompatActivity {
 
             if (isGuest) {
                 rsvpButton.setEnabled(true);
-                rsvpButton.setText("Guest Mode");
+                rsvpButton.setText(R.string.guest_mode_button);
                 rsvpStatusText.setText(R.string.sign_in_to_rsvp);
 
                 rsvpButton.setOnClickListener(v ->
-                        showStyledMessage("Guest mode is active. Sign in to RSVP.")
+                        showStyledMessage(getString(R.string.guest_mode_rsvp_only))
                 );
             } else {
                 rsvpButton.setOnClickListener(v -> handleRsvpClick());
@@ -140,7 +140,7 @@ public class EventDetailsActivity extends AppCompatActivity {
 
     private void handleRsvpClick() {
         if (event == null) {
-            Toast.makeText(this, "Event unavailable", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.event_unavailable, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -153,13 +153,13 @@ public class EventDetailsActivity extends AppCompatActivity {
 
             showStyledMessage(
                     newStatus
-                            ? "You’re in! RSVP confirmed."
-                            : "RSVP canceled."
+                            ? getString(R.string.rsvp_confirmed)
+                            : getString(R.string.rsvp_cancelled)
             );
 
         } catch (Exception e) {
             Log.e(RSVP_DEBUG, "Error updating RSVP", e);
-            Toast.makeText(this, "Failed to update RSVP", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.rsvp_update_failed, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -195,7 +195,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         capacityRow.setVisibility(View.VISIBLE);
 
         populateTags();
-        createdByText.setText(getString(R.string.created_by_format, "Event Organizer"));
+        createdByText.setText(getString(R.string.created_by_format, getString(R.string.event_organizer)));
     }
 
     private void populateTags() {
@@ -287,7 +287,7 @@ public class EventDetailsActivity extends AppCompatActivity {
 
     private void addEventToCalendar() {
         if (event == null) {
-            Toast.makeText(this, "Event unavailable", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.event_unavailable, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -307,7 +307,7 @@ public class EventDetailsActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(RSVP_DEBUG, "No calendar app available", e);
-            Toast.makeText(this, "No calendar app available", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.no_calendar_app, Toast.LENGTH_SHORT).show();
         }
     }
 
