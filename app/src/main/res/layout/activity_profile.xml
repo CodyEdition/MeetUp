@@ -18,219 +18,219 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="24dp">
-
-        <ImageButton
-            android:id="@+id/backButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/back"
-            android:src="@drawable/ic_arrow_back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/text_on_dark" />
-
-        <TextView
-            android:id="@+id/titleText"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/profile"
-            android:textColor="@color/text_on_dark"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/backButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/backButton" />
+            android:padding="24dp">
 
-        <FrameLayout
-            android:id="@+id/avatarContainer"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="32dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/backButton">
-
-            <View
-                android:id="@+id/avatarBackground"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_avatar_circle" />
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/back"
+                android:src="@drawable/ic_arrow_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/text_on_dark" />
 
             <TextView
-                android:id="@+id/avatarInitials"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
+                android:id="@+id/titleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/profile"
+                android:textColor="@color/text_on_dark"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/backButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/backButton" />
+
+            <FrameLayout
+                android:id="@+id/avatarContainer"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="32dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/backButton">
+
+                <View
+                    android:id="@+id/avatarBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_avatar_circle" />
+
+                <TextView
+                    android:id="@+id/avatarInitials"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textColor="@color/text_on_accent"
+                    android:textSize="36sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/displayNameLayout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/bg_edittext_underline"
+                android:hint="@string/display_name"
+                app:boxBackgroundMode="none"
+                app:boxStrokeColor="@color/accent_orange"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/avatarContainer"
+                app:startIconDrawable="@drawable/ic_person"
+                app:startIconTint="@color/accent_orange">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/displayNameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/text_on_dark" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/emailLayout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_edittext_underline"
+                android:hint="@string/email"
+                app:boxBackgroundMode="none"
+                app:boxStrokeColor="@color/accent_orange"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/displayNameLayout"
+                app:startIconDrawable="@drawable/ic_email"
+                app:startIconTint="@color/accent_orange">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emailEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/text_on_dark" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/bioLayout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_edittext_underline"
+                android:hint="@string/bio"
+                app:boxBackgroundMode="none"
+                app:boxStrokeColor="@color/accent_orange"
+                app:counterEnabled="true"
+                app:counterMaxLength="200"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/emailLayout"
+                app:startIconDrawable="@drawable/ic_bio"
+                app:startIconTint="@color/accent_orange">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/bioEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="top"
+                    android:inputType="textMultiLine"
+                    android:lines="3"
+                    android:maxLength="200"
+                    android:textColor="@color/text_on_dark" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/selectInterestsButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
+                android:backgroundTint="@color/accent_orange"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/select_interests_label"
                 android:textColor="@color/text_on_accent"
-                android:textSize="36sp"
-                android:textStyle="bold" />
-        </FrameLayout>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bioLayout" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/displayNameLayout"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/bg_edittext_underline"
-            android:hint="@string/display_name"
-            app:boxBackgroundMode="none"
-            app:boxStrokeColor="@color/accent_orange"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/avatarContainer"
-            app:startIconDrawable="@drawable/ic_person"
-            app:startIconTint="@color/accent_orange">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/displayNameEditText"
-                android:layout_width="match_parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addCustomInterestButton"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:inputType="textPersonName"
-                android:textColor="@color/text_on_dark" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="16dp"
+                android:text="@string/add_custom_interest"
+                android:textSize="13sp"
+                android:textColor="@color/accent_orange"
+                app:strokeColor="@color/accent_orange"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:layout_constraintTop_toBottomOf="@id/selectInterestsButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/emailLayout"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/bg_edittext_underline"
-            android:hint="@string/email"
-            app:boxBackgroundMode="none"
-            app:boxStrokeColor="@color/accent_orange"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/displayNameLayout"
-            app:startIconDrawable="@drawable/ic_email"
-            app:startIconTint="@color/accent_orange">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/emailEditText"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/interestsText"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/text_on_dark" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:text="@string/no_interests_selected"
+                android:textColor="@color/text_on_dark"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/selectInterestsButton" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/bioLayout"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/bg_edittext_underline"
-            android:hint="@string/bio"
-            app:boxBackgroundMode="none"
-            app:boxStrokeColor="@color/accent_orange"
-            app:counterEnabled="true"
-            app:counterMaxLength="200"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/emailLayout"
-            app:startIconDrawable="@drawable/ic_bio"
-            app:startIconTint="@color/accent_orange">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/bioEditText"
-                android:layout_width="match_parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/changePasswordButton"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
                 android:fontFamily="sans-serif-medium"
-                android:gravity="top"
-                android:inputType="textMultiLine"
-                android:lines="3"
-                android:maxLength="200"
-                android:textColor="@color/text_on_dark" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:text="@string/change_password"
+                android:textColor="@color/accent_orange"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/interestsText"
+                app:strokeColor="@color/accent_orange" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/saveButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="24dp"
+                android:backgroundTint="@color/accent_orange"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/save_profile"
+                android:textColor="@color/text_on_accent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/changePasswordButton" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/selectInterestsButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="32dp"
-            android:backgroundTint="@color/accent_orange"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/select_interests_label"
-            android:textColor="@color/text_on_accent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bioLayout" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/addCustomInterestButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Add Custom Interest"
-            android:textSize="13sp"
-            android:textColor="@color/accent_orange"
-            app:strokeColor="@color/accent_orange"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            app:layout_constraintTop_toBottomOf="@id/selectInterestsButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <TextView
-            android:id="@+id/interestsText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:gravity="center"
-            android:text="@string/no_interests_selected"
-            android:textColor="@color/text_on_dark"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/selectInterestsButton" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/changePasswordButton"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="32dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/change_password"
-            android:textColor="@color/accent_orange"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/interestsText"
-            app:strokeColor="@color/accent_orange" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/saveButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="24dp"
-            android:backgroundTint="@color/accent_orange"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/save_profile"
-            android:textColor="@color/text_on_accent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/changePasswordButton" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
