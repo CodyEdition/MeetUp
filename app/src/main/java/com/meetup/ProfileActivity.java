@@ -119,7 +119,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (!displayName.isEmpty()) {
             String[] parts = displayName.split("\\s+");
             if (parts.length >= 2) {
-                initials = String.valueOf(Character.toUpperCase(parts[0].charAt(0))) 
+                initials = String.valueOf(Character.toUpperCase(parts[0].charAt(0)))
                         + Character.toUpperCase(parts[1].charAt(0));
             } else {
                 initials = displayName.substring(0, Math.min(2, displayName.length())).toUpperCase();
@@ -162,13 +162,13 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void showReauthDialogForEmailChange(String newEmail) {
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_change_password, null);
-        
+
         TextInputLayout currentPasswordLayout = dialogView.findViewById(R.id.currentPasswordLayout);
         currentPasswordLayout.setHint(getString(R.string.enter_password_to_confirm));
-        
+
         dialogView.findViewById(R.id.newPasswordLayout).setVisibility(View.GONE);
         dialogView.findViewById(R.id.confirmPasswordLayout).setVisibility(View.GONE);
-        
+
         EditText currentPasswordInput = dialogView.findViewById(R.id.currentPasswordEditText);
 
         AlertDialog dialog = new AlertDialog.Builder(this, R.style.ThemeOverlay_MeetUp_AlertDialog)
@@ -205,10 +205,10 @@ public class ProfileActivity extends AppCompatActivity {
                             emailEditText.setText(originalEmail);
                             Toast.makeText(this, R.string.verification_email_sent, Toast.LENGTH_LONG).show();
                         })
-                        .addOnFailureListener(e -> 
-                                Toast.makeText(this, getString(R.string.email_update_failed, e.getMessage()), 
+                        .addOnFailureListener(e ->
+                                Toast.makeText(this, getString(R.string.email_update_failed, e.getMessage()),
                                         Toast.LENGTH_SHORT).show()))
-                .addOnFailureListener(e -> 
+                .addOnFailureListener(e ->
                         Toast.makeText(this, R.string.incorrect_password, Toast.LENGTH_SHORT).show());
     }
 
@@ -251,8 +251,8 @@ public class ProfileActivity extends AppCompatActivity {
             return false;
         }
         if (newPassword.length() < AuthInputValidator.MIN_PASSWORD_LENGTH) {
-            Toast.makeText(this, getResources().getQuantityString(R.plurals.password_min_characters, 
-                    AuthInputValidator.MIN_PASSWORD_LENGTH, AuthInputValidator.MIN_PASSWORD_LENGTH), 
+            Toast.makeText(this, getResources().getQuantityString(R.plurals.password_min_characters,
+                            AuthInputValidator.MIN_PASSWORD_LENGTH, AuthInputValidator.MIN_PASSWORD_LENGTH),
                     Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -273,12 +273,12 @@ public class ProfileActivity extends AppCompatActivity {
         AuthCredential credential = EmailAuthProvider.getCredential(originalEmail, currentPassword);
         user.reauthenticate(credential)
                 .addOnSuccessListener(aVoid -> user.updatePassword(newPassword)
-                        .addOnSuccessListener(aVoid2 -> 
+                        .addOnSuccessListener(aVoid2 ->
                                 Toast.makeText(this, R.string.password_changed, Toast.LENGTH_SHORT).show())
-                        .addOnFailureListener(e -> 
-                                Toast.makeText(this, getString(R.string.password_change_failed, e.getMessage()), 
+                        .addOnFailureListener(e ->
+                                Toast.makeText(this, getString(R.string.password_change_failed, e.getMessage()),
                                         Toast.LENGTH_SHORT).show()))
-                .addOnFailureListener(e -> 
+                .addOnFailureListener(e ->
                         Toast.makeText(this, R.string.incorrect_password, Toast.LENGTH_SHORT).show());
     }
 
@@ -292,7 +292,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         new AlertDialog.Builder(this)
-                .setTitle("Select Interests")
+                .setTitle(R.string.select_interests_title)
                 .setMultiChoiceItems(tagsArray, checkedItems, (dialog, which, isChecked) -> {
                     if (isChecked) {
                         if (!selectedInterests.contains(tagsArray[which])) {
@@ -302,7 +302,7 @@ public class ProfileActivity extends AppCompatActivity {
                         selectedInterests.remove(tagsArray[which]);
                     }
                 })
-                .setPositiveButton("OK", (dialog, which) -> {
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
                     interestsText.setText(
                             selectedInterests.isEmpty()
                                     ? getString(R.string.no_interests_selected)
@@ -313,13 +313,10 @@ public class ProfileActivity extends AppCompatActivity {
     }
     private void seedDefaultTagsIfNeeded() {
         if (db.interestTagDao().getAllTags().isEmpty()) {
-            db.interestTagDao().insertTag(new InterestTagEntity("Tech"));
-            db.interestTagDao().insertTag(new InterestTagEntity("Music"));
-            db.interestTagDao().insertTag(new InterestTagEntity("Art"));
-            db.interestTagDao().insertTag(new InterestTagEntity("Food"));
-            db.interestTagDao().insertTag(new InterestTagEntity("Sports"));
-            db.interestTagDao().insertTag(new InterestTagEntity("Networking"));
-            db.interestTagDao().insertTag(new InterestTagEntity("Culture"));
+            String[] defaultTags = getResources().getStringArray(R.array.default_interest_tags);
+            for (String tag : defaultTags) {
+                db.interestTagDao().insertTag(new InterestTagEntity(tag));
+            }
         }
     }
     private void loadAvailableTagsFromDb() {
@@ -331,16 +328,16 @@ public class ProfileActivity extends AppCompatActivity {
     }
     private void showAddCustomInterestDialog() {
         final EditText input = new EditText(this);
-        input.setHint("Enter new interest tag");
+        input.setHint(R.string.enter_new_interest_tag);
 
         new AlertDialog.Builder(this)
-                .setTitle("Add Custom Interest")
+                .setTitle(R.string.add_custom_interest)
                 .setView(input)
-                .setPositiveButton("Add", (dialog, which) -> {
+                .setPositiveButton(R.string.add, (dialog, which) -> {
                     String newTag = input.getText().toString().trim();
 
                     if (newTag.isEmpty()) {
-                        Toast.makeText(this, "Interest tag cannot be empty.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.interest_tag_empty, Toast.LENGTH_SHORT).show();
                         return;
                     }
 
@@ -371,9 +368,9 @@ public class ProfileActivity extends AppCompatActivity {
                                     : String.join(", ", selectedInterests)
                     );
 
-                    Toast.makeText(this, "Custom interest added.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.custom_interest_added, Toast.LENGTH_SHORT).show();
                 })
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton(R.string.cancel, null)
                 .show();
     }
 }
