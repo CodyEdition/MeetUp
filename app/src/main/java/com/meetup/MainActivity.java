@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.addCityButton).setOnClickListener(v -> {
             if (isGuest) {
-                Toast.makeText(this, "Guest users cannot add cities. Please sign in.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.guest_cannot_add_cities, Toast.LENGTH_SHORT).show();
                 return;
             }
             showAddCityDialog();
@@ -148,21 +148,21 @@ public class MainActivity extends AppCompatActivity {
         EditText provinceInput = dialogView.findViewById(R.id.editProvinceName);
 
         new AlertDialog.Builder(this, R.style.ThemeOverlay_MeetUp_AlertDialog)
-                .setTitle("Add New City Hub")
+                .setTitle(R.string.add_new_city_hub)
                 .setView(dialogView)
-                .setPositiveButton("Add", (dialog, which) -> {
+                .setPositiveButton(R.string.add, (dialog, which) -> {
                     String cityName = cityInput.getText().toString().trim();
                     String province = provinceInput.getText().toString().trim();
 
                     if (!cityName.isEmpty() && !province.isEmpty()) {
                         db.cityDao().insertCity(new CityEntity(cityName, province));
                         loadCities();
-                        Toast.makeText(this, "City added successfully!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.city_added_successfully, Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.please_fill_all_fields, Toast.LENGTH_SHORT).show();
                     }
                 })
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton(R.string.cancel, null)
                 .show();
     }
 
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateProfileAvatar() {
         UserEntity user = db.userDao().getCurrentUser();
-        String email = FirebaseAuth.getInstance().getCurrentUser() != null 
+        String email = FirebaseAuth.getInstance().getCurrentUser() != null
                 ? FirebaseAuth.getInstance().getCurrentUser().getEmail() : "";
 
         String initials;
@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
             String displayName = user.displayName;
             String[] parts = displayName.split("\\s+");
             if (parts.length >= 2) {
-                initials = String.valueOf(Character.toUpperCase(parts[0].charAt(0))) 
+                initials = String.valueOf(Character.toUpperCase(parts[0].charAt(0)))
                         + Character.toUpperCase(parts[1].charAt(0));
             } else {
                 initials = displayName.substring(0, Math.min(2, displayName.length())).toUpperCase();
