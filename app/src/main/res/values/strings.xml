@@ -1,7 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Meet Up</string>
-
-    <!-- Authentication -->
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
     <string name="login">Login</string>
@@ -16,8 +15,6 @@
     <string name="login_failed">Login failed: %1$s</string>
     <string name="logout">Logout</string>
     <string name="welcome">Welcome, %1$s</string>
-
-    <!-- Validation -->
     <string name="error_empty_username">Username is required</string>
     <string name="error_empty_email">Email is required</string>
     <string name="error_empty_password">Password is required</string>
@@ -26,7 +23,6 @@
     <string name="error_password_too_short">Password must be at least 6 characters</string>
     <string name="select_your_city_hub">Select Your City Hub</string>
     <string name="welcome_message">Welcome</string>
-
     <string name="create_event">Create Event</string>
     <string name="event_title">Title</string>
     <string name="event_description">Description</string>
@@ -43,17 +39,15 @@
     <string name="error_attendees_min">Must have at least 2 attendees</string>
     <string name="error_attendees_max">Cannot exceed 10,000 attendees</string>
     <string name="event_created_success">Event created successfully</string>
-    <string name="no_events_found">No events found. Tap \'Create Event\' to create one!</string>
+    <string name="no_events_found">No events found. Tap Create Event to create one.</string>
     <string name="error">Something went wrong.</string>
-    <string name="loading_events">Loading events…</string>
+    <string name="loading_events">Loading events...</string>
     <string name="refresh">Refresh</string>
     <string name="status_joined">Status: Joined</string>
     <string name="status_not_joined">Status: Not Joined</string>
-    <string name="refreshing">Refreshing…</string>
+    <string name="refreshing">Refreshing...</string>
     <string name="something_went_wrong">Something went wrong while loading events.</string>
-    <string name="no_events">No events yet. Tap \'Create Event\' to add one.</string>
-
-    <!-- Profile -->
+    <string name="no_events">No events yet. Tap Create Event to add one.</string>
     <string name="profile">Profile</string>
     <string name="display_name">Display Name</string>
     <string name="bio">About Me</string>
@@ -84,7 +78,7 @@
     <string name="incorrect_password">Incorrect password</string>
     <string name="password_changed">Password changed successfully</string>
     <string name="password_change_failed">Failed to change password: %1$s</string>
-    <string name="status_not_rsvpd">Status: You have not RSVP’d for this event yet.</string>
+    <string name="status_not_rsvpd">Status: You have not RSVPed for this event yet.</string>
     <string name="rsvp">RSVP</string>
     <string name="add_city">+ Add City</string>
     <string name="city_name_hint">City Name (e.g. Vancouver)</string>
@@ -92,19 +86,17 @@
     <string name="continue_as_guest">Continue as Guest</string>
     <string name="welcome_guest">Welcome, Guest</string>
     <string name="events_in_city">Events in %1$s</string>
-    <string name="event_date_city">%1$s • %2$s</string>
+    <string name="event_date_city">%1$s - %2$s</string>
     <string name="city_format">City: %1$s</string>
     <string name="date_format">Date: %1$s</string>
     <string name="sign_in_to_rsvp">Sign in to RSVP for this event.</string>
     <string name="event_not_found">Event not found</string>
     <string name="event_load_error">This event could not be loaded.</string>
     <string name="unavailable">Unavailable</string>
-    <string name="status_rsvpd">Status: You have RSVP\'d for this event.</string>
+    <string name="status_rsvpd">Status: You have RSVPed for this event.</string>
     <string name="cancel_rsvp">Cancel RSVP</string>
     <string name="rsvp_now">RSVP Now</string>
     <string name="time_separator">:</string>
-
-    <!-- Event Details -->
     <string name="date">Date</string>
     <string name="time">Time</string>
     <string name="location">Location</string>
@@ -121,8 +113,6 @@
     <string name="no_tags">No tags</string>
     <string name="interests">Interests</string>
     <string name="interests_hint">e.g. Music, Tech, Art</string>
-
-    <!-- Lint: hardcoded text / i18n -->
     <string name="select_interest_tags_label">Select Interest Tags</string>
     <string name="no_tags_selected">No tags selected</string>
     <string name="select_interests_label">Select Interests</string>
@@ -132,9 +122,81 @@
     <string name="rsvp_cancelled_toast">You have cancelled your RSVP.</string>
     <string name="time_tbd">TBD</string>
     <string name="no_calendar_app">No calendar app found</string>
-    <string name="tags_matching_prefix">🔥 %1$s</string>
-    <string name="tags_other_prefix"> • %1$s</string>
+    <string name="tags_matching_prefix">Match: %1$s</string>
+    <string name="tags_other_prefix">- %1$s</string>
     <string name="unknown_city">Unknown City</string>
+    <string name="show_matching_interests_only">Show Matching Interests Only</string>
+    <string name="show_all_events">Show All Events</string>
     <string name="my_rsvp_events">My RSVP Events</string>
-    <string name="show_matching_interests">Show Matching Interests Only</string>
+    <string name="my_rsvpd_events_title">My RSVPed Events</string>
+    <string name="my_rsvpd_events_empty">No RSVPed events found.</string>
+    <string name="my_rsvpd_events_sign_in_required">Sign in to view your RSVPed events.</string>
+    <string name="my_rsvpd_events_none_yet">You have not RSVPed to any events yet.</string>
+    <string name="my_rsvpd_events_load_error_toast">Unable to load RSVP events.</string>
+    <string name="my_rsvpd_events_load_error_state">Something went wrong loading your RSVPed events.</string>
+    <string name="city_not_selected_returning_home">City not selected. Returning to home.</string>
+    <string name="guest_mode_rsvp_or_create">Guest mode is active. Sign in to RSVP or create events.</string>
+    <string name="guest_mode_create_only">Guest mode is active. Sign in to create events.</string>
+    <string name="guest_mode_rsvp_only">Guest mode is active. Sign in to RSVP.</string>
+    <string name="guest_mode_button">Guest Mode</string>
+    <string name="no_interests_set">No interests set in your profile.</string>
+    <string name="no_events_found_in_city">No events found in %1$s</string>
+    <string name="no_events_available">No events available</string>
+    <string name="no_interest_matches_in_city">No events match your interests in this city.</string>
+    <string name="error_loading_events_toast">Error loading events</string>
+    <string name="invalid_event">Invalid event</string>
+    <string name="event_unavailable">Event unavailable</string>
+    <string name="rsvp_confirmed">You are in. RSVP confirmed.</string>
+    <string name="rsvp_cancelled">RSVP canceled.</string>
+    <string name="rsvp_update_failed">Failed to update RSVP</string>
+    <string name="event_organizer">Event Organizer</string>
+    <string name="add_new_city_hub">Add New City Hub</string>
+    <string name="add">Add</string>
+    <string name="city_added_successfully">City added successfully.</string>
+    <string name="please_fill_all_fields">Please fill all fields</string>
+    <string name="guest_cannot_add_cities">Guest users cannot add cities. Please sign in.</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="select_interest_tags_title">Select Interest Tags</string>
+    <string name="select_interests_title">Select Interests</string>
+    <string name="ok">OK</string>
+    <string name="add_custom_interest">Add Custom Interest</string>
+    <string name="enter_new_interest_tag">Enter new interest tag</string>
+    <string name="interest_tag_empty">Interest tag cannot be empty.</string>
+    <string name="custom_interest_added">Custom interest added.</string>
+    <string name="sample_event_title_1">Tech Meetup</string>
+    <string name="sample_event_description_1">A meetup for developers</string>
+    <string name="sample_event_city_1">Ottawa</string>
+    <string name="sample_event_location_1">Downtown Hub</string>
+    <string name="sample_event_tags_1">Tech, Networking</string>
+    <string name="sample_event_title_2">Startup Pitch Night</string>
+    <string name="sample_event_description_2">Pitch your startup idea</string>
+    <string name="sample_event_city_2">Ottawa</string>
+    <string name="sample_event_location_2">Innovation Centre</string>
+    <string name="sample_event_tags_2">Tech, Networking</string>
+    <string name="sample_event_title_3">Music Festival Meetup</string>
+    <string name="sample_event_description_3">Meet before the festival</string>
+    <string name="sample_event_city_3">Toronto</string>
+    <string name="sample_event_location_3">Harbourfront</string>
+    <string name="sample_event_tags_3">Music, Art</string>
+    <string name="sample_event_title_4">Art Walk</string>
+    <string name="sample_event_description_4">Explore local galleries</string>
+    <string name="sample_event_city_4">Toronto</string>
+    <string name="sample_event_location_4">Queen Street West</string>
+    <string name="sample_event_tags_4">Art, Culture</string>
+    <string name="sample_event_title_5">Language Exchange</string>
+    <string name="sample_event_description_5">Practice languages together</string>
+    <string name="sample_event_city_5">Montreal</string>
+    <string name="sample_event_location_5">Old Port Cafe</string>
+    <string name="sample_event_tags_5">Networking, Culture</string>
+    <string-array name="default_interest_tags">
+        <item>Tech</item>
+        <item>Music</item>
+        <item>Art</item>
+        <item>Food</item>
+        <item>Sports</item>
+        <item>Networking</item>
+        <item>Culture</item>
+    </string-array>
+    <string name="am_label">AM</string>
+    <string name="pm_label">PM</string>
 </resources>
