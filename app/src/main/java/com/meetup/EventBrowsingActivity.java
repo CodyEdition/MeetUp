@@ -73,7 +73,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
 
         selectedCity = getIntent().getStringExtra("selected_city");
         if (selectedCity == null || selectedCity.trim().isEmpty()) {
-            Toast.makeText(this, "City not selected. Returning to home.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.city_not_selected_returning_home, Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -82,7 +82,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
         cityTitleText.setText(getString(R.string.events_in_city, selectedCity));
 
         if (isGuest) {
-            showStyledMessage("Guest mode is active. Sign in to RSVP or create events.");
+            showStyledMessage(getString(R.string.guest_mode_rsvp_or_create));
         }
 
         setupFilterButton();
@@ -142,7 +142,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
 
         filterInterestButton.setOnClickListener(v -> {
             if (userInterests == null || userInterests.trim().isEmpty()) {
-                Toast.makeText(this, "No interests set in your profile.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.no_interests_set, Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -150,8 +150,8 @@ public class EventBrowsingActivity extends AppCompatActivity {
 
             filterInterestButton.setText(
                     filterByInterestOnly
-                            ? "Show All Events"
-                            : "Show Matching Interests Only"
+                            ? getString(R.string.show_all_events)
+                            : getString(R.string.show_matching_interests_only)
             );
 
             loadEvents();
@@ -254,7 +254,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
         View createButton = findViewById(R.id.createEventButton);
         createButton.setOnClickListener(v -> {
             if (isGuest) {
-                showStyledMessage("Guest mode is active. Sign in to create events.");
+                showStyledMessage(getString(R.string.guest_mode_create_only));
                 return;
             }
 
@@ -274,63 +274,63 @@ public class EventBrowsingActivity extends AppCompatActivity {
             Log.d(EVENT_DEBUG, "Database empty, inserting sample events");
 
             db.eventDao().insert(new EventEntity(
-                    "Tech Meetup",
-                    "A meetup for developers",
-                    "Ottawa",
+                    getString(R.string.sample_event_title_1),
+                    getString(R.string.sample_event_description_1),
+                    getString(R.string.sample_event_city_1),
                     "2026-03-25",
                     "06:00 PM",
-                    "Downtown Hub",
+                    getString(R.string.sample_event_location_1),
                     50,
                     false,
-                    "Tech, Networking"
+                    getString(R.string.sample_event_tags_1)
             ));
 
             db.eventDao().insert(new EventEntity(
-                    "Startup Pitch Night",
-                    "Pitch your startup idea",
-                    "Ottawa",
+                    getString(R.string.sample_event_title_2),
+                    getString(R.string.sample_event_description_2),
+                    getString(R.string.sample_event_city_2),
                     "2026-03-28",
                     "07:30 PM",
-                    "Innovation Centre",
+                    getString(R.string.sample_event_location_2),
                     80,
                     false,
-                    "Tech, Networking"
+                    getString(R.string.sample_event_tags_1)
             ));
 
             db.eventDao().insert(new EventEntity(
-                    "Music Festival Meetup",
-                    "Meet before the festival",
-                    "Toronto",
+                    getString(R.string.sample_event_title_3),
+                    getString(R.string.sample_event_description_3),
+                    getString(R.string.sample_event_city_3),
                     "2026-04-02",
                     "05:00 PM",
-                    "Harbourfront",
+                    getString(R.string.sample_event_location_3),
                     120,
                     false,
-                    "Music, Art"
+                    getString(R.string.sample_event_tags_3)
             ));
 
             db.eventDao().insert(new EventEntity(
-                    "Art Walk",
-                    "Explore local galleries",
-                    "Toronto",
+                    getString(R.string.sample_event_title_4),
+                    getString(R.string.sample_event_description_4),
+                    getString(R.string.sample_event_city_4),
                     "2026-04-05",
                     "01:00 PM",
-                    "Queen Street West",
+                    getString(R.string.sample_event_location_4),
                     40,
                     false,
-                    "Art, Culture"
+                    getString(R.string.sample_event_tags_4)
             ));
 
             db.eventDao().insert(new EventEntity(
-                    "Language Exchange",
-                    "Practice languages together",
-                    "Montreal",
+                    getString(R.string.sample_event_title_5),
+                    getString(R.string.sample_event_description_5),
+                    getString(R.string.sample_event_city_5),
                     "2026-04-10",
                     "06:30 PM",
-                    "Old Port Café",
+                    getString(R.string.sample_event_location_5),
                     35,
                     false,
-                    "Networking, Culture"
+                    getString(R.string.sample_event_tags_5)
             ));
         }
     }
@@ -347,8 +347,8 @@ public class EventBrowsingActivity extends AppCompatActivity {
             if (events == null || events.isEmpty()) {
                 Log.d(EVENT_DEBUG, "No events found for city: " + selectedCity);
                 adapter.notifyDataSetChanged();
-                showEmptyState("No events found in " + selectedCity);
-                Toast.makeText(this, "No events available", Toast.LENGTH_SHORT).show();
+                showEmptyState(getString(R.string.no_events_found_in_city, selectedCity));
+                Toast.makeText(this, R.string.no_events_available, Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -371,7 +371,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
 
                 if (filteredEvents.isEmpty()) {
                     adapter.notifyDataSetChanged();
-                    showEmptyState("No events match your interests in this city.");
+                    showEmptyState(getString(R.string.no_interest_matches_in_city));
                     return;
                 }
             } else {
@@ -384,7 +384,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(EVENT_DEBUG, "Error loading events", e);
-            Toast.makeText(this, "Error loading events", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.error_loading_events_toast, Toast.LENGTH_SHORT).show();
             showErrorState();
         }
     }
