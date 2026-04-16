@@ -56,8 +56,8 @@ public class MyRsvpEventsActivity extends AppCompatActivity {
         db = AppDatabase.getInstance(this);
 
         if (isGuest) {
-            showStyledMessage("Guest mode is active. Sign in to view RSVP'd events.");
-            emptyStateText.setText("Sign in to view your RSVP'd events.");
+            showStyledMessage(getString(R.string.guest_mode_view_rsvps));
+            emptyStateText.setText(R.string.my_rsvpd_events_sign_in_required);
             emptyStateText.setVisibility(View.VISIBLE);
             rsvpEventsListView.setVisibility(View.GONE);
             return;
@@ -96,8 +96,8 @@ public class MyRsvpEventsActivity extends AppCompatActivity {
 
                 if (event != null) {
                     titleText.setText(event.title);
-                    metaText.setText(event.date + " • " + event.city);
-                    rsvpText.setText("Status: Joined");
+                    metaText.setText(getString(R.string.event_date_city, event.date, event.city));
+                    rsvpText.setText(R.string.status_joined);
                     rsvpText.setTextColor(ContextCompat.getColor(MyRsvpEventsActivity.this, R.color.accent_orange));
 
                     if (event.tags != null && !event.tags.trim().isEmpty()) {
@@ -134,7 +134,7 @@ public class MyRsvpEventsActivity extends AppCompatActivity {
             List<EventEntity> events = db.eventDao().getRsvpedEvents();
 
             if (events == null || events.isEmpty()) {
-                emptyStateText.setText("You have not RSVP'd to any events yet.");
+                emptyStateText.setText(R.string.my_rsvpd_events_none_yet);
                 emptyStateText.setVisibility(View.VISIBLE);
                 rsvpEventsListView.setVisibility(View.GONE);
                 return;
@@ -146,8 +146,8 @@ public class MyRsvpEventsActivity extends AppCompatActivity {
             rsvpEventsListView.setVisibility(View.VISIBLE);
 
         } catch (Exception e) {
-            Toast.makeText(this, "Unable to load RSVP events.", Toast.LENGTH_SHORT).show();
-            emptyStateText.setText("Something went wrong loading your RSVP'd events.");
+            Toast.makeText(this, R.string.my_rsvpd_events_load_error_toast, Toast.LENGTH_SHORT).show();
+            emptyStateText.setText(R.string.my_rsvpd_events_load_error_state);
             emptyStateText.setVisibility(View.VISIBLE);
             rsvpEventsListView.setVisibility(View.GONE);
         }
