@@ -1,11 +1,10 @@
 package com.meetup.db;
 
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "events")
-public class EventEntity { // replaces placeholder
+public class EventEntity {
 
     @PrimaryKey(autoGenerate = true)
     public int id;
@@ -21,18 +20,6 @@ public class EventEntity { // replaces placeholder
     public boolean isRsvped;
 
     public final String tags;
-
-    @Ignore
-    public EventEntity(String title, String description, String city, String date) {
-        this.title = title;
-        this.description = description;
-        this.city = city;
-        this.date = date;
-        this.time = "";
-        this.location = "";
-        this.maxAttendees = 0;
-        this.tags = "";
-    }
 
     public EventEntity(String title, String description, String city, String date, String time, String location, int maxAttendees, boolean isRsvped,String tags ) {
         this.title = title;
