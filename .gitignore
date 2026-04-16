@@ -16,3 +16,8 @@
 .cxx
 local.properties
 /.vscode/
+
+# System Trace / Perfetto
+traces/*.perfetto-trace
+traces/*.trace
+traces/*.ctrace

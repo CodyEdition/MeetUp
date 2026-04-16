@@ -1,6 +1,7 @@
 package com.meetup.db;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "events")
@@ -31,5 +32,10 @@ public class EventEntity {
         this.maxAttendees = maxAttendees;
         this.isRsvped = isRsvped;
         this.tags = tags;
+    }
+
+    @Ignore
+    public EventEntity(String title, String description, String city, String date) {
+        this(title, description, city, date, "", "", 0, false, "");
     }
 }

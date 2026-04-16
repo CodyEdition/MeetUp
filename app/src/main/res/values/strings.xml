@@ -135,4 +135,6 @@
     <string name="tags_matching_prefix">🔥 %1$s</string>
     <string name="tags_other_prefix"> • %1$s</string>
     <string name="unknown_city">Unknown City</string>
+    <string name="my_rsvp_events">My RSVP Events</string>
+    <string name="show_matching_interests">Show Matching Interests Only</string>
 </resources>

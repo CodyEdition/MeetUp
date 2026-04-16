@@ -18,6 +18,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.tracing.Trace;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.meetup.db.AppDatabase;
@@ -111,10 +112,26 @@ public class EventBrowsingActivity extends AppCompatActivity {
     private void setupRefresh() {
         swipeRefreshLayout.setColorSchemeResources(R.color.accent_orange);
         swipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.background_dark);
+        swipeRefreshLayout.setOnChildScrollUpCallback((parent, child) -> eventListCanScrollUp());
         swipeRefreshLayout.setOnRefreshListener(() -> {
             Log.d(EVENT_DEBUG, "Swipe refresh triggered for city: " + selectedCity);
             refreshEvents();
         });
+    }
+
+    private boolean eventListCanScrollUp() {
+        if (eventsListView == null) {
+            return false;
+        }
+        if (eventsListView.getFirstVisiblePosition() > 0) {
+            return true;
+        }
+        if (eventsListView.getChildCount() == 0) {
+            return false;
+        }
+        View first = eventsListView.getChildAt(0);
+        int paddingTop = eventsListView.getPaddingTop();
+        return first.getTop() < paddingTop;
     }
 
     private void setupFilterButton() {
@@ -142,64 +159,69 @@ public class EventBrowsingActivity extends AppCompatActivity {
     }
 
     private void setupAdapter() {
-        adapter = new ArrayAdapter<EventEntity>(this, 0, filteredEvents) {
+        adapter = new ArrayAdapter<>(this, 0, filteredEvents) {
             @NonNull
             @Override
             public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-                View view = convertView;
-                if (view == null) {
-                    view = getLayoutInflater().inflate(R.layout.item_event_browsing, parent, false);
-                }
-
-                EventEntity event = getItem(position);
-
-                TextView titleText = view.findViewById(R.id.eventTitleItem);
-                TextView metaText = view.findViewById(R.id.eventMetaItem);
-                TextView rsvpText = view.findViewById(R.id.eventRsvpItem);
-                TextView tagText = view.findViewById(R.id.eventTagItem);
-                TextView otherTagsText = view.findViewById(R.id.eventOtherTagsItem);
-                View tagsContainer = view.findViewById(R.id.tagsContainer);
-
-                if (event != null) {
-                    titleText.setText(event.title);
-                    metaText.setText(getString(R.string.event_date_city, event.date, event.city));
-
-                    if (event.isRsvped) {
-                        rsvpText.setText(R.string.status_joined);
-                        rsvpText.setTextColor(ContextCompat.getColor(EventBrowsingActivity.this, R.color.accent_orange));
-                    } else {
-                        rsvpText.setText(R.string.status_not_joined);
-                        rsvpText.setTextColor(ContextCompat.getColor(EventBrowsingActivity.this, R.color.text_on_dark));
+                Trace.beginSection("EventBrowsing#getView");
+                try {
+                    View view = convertView;
+                    if (view == null) {
+                        view = getLayoutInflater().inflate(R.layout.item_event_browsing, parent, false);
                     }
 
-                    if (event.tags != null && !event.tags.trim().isEmpty()) {
-                        String matchingTags = getMatchingTags(event, userInterests);
-                        String nonMatchingTags = getNonMatchingTags(event, userInterests);
+                    EventEntity event = getItem(position);
 
-                        if (!matchingTags.isEmpty()) {
-                            tagText.setText(getString(R.string.tags_matching_prefix, matchingTags));
-                            tagText.setTextColor(ContextCompat.getColor(EventBrowsingActivity.this, R.color.accent_orange));
-                            tagText.setVisibility(View.VISIBLE);
+                    TextView titleText = view.findViewById(R.id.eventTitleItem);
+                    TextView metaText = view.findViewById(R.id.eventMetaItem);
+                    TextView rsvpText = view.findViewById(R.id.eventRsvpItem);
+                    TextView tagText = view.findViewById(R.id.eventTagItem);
+                    TextView otherTagsText = view.findViewById(R.id.eventOtherTagsItem);
+                    View tagsContainer = view.findViewById(R.id.tagsContainer);
 
-                            if (!nonMatchingTags.isEmpty()) {
-                                otherTagsText.setText(getString(R.string.tags_other_prefix, nonMatchingTags));
-                                otherTagsText.setVisibility(View.VISIBLE);
-                            } else {
-                                otherTagsText.setVisibility(View.GONE);
-                            }
+                    if (event != null) {
+                        titleText.setText(event.title);
+                        metaText.setText(getString(R.string.event_date_city, event.date, event.city));
+
+                        if (event.isRsvped) {
+                            rsvpText.setText(R.string.status_joined);
+                            rsvpText.setTextColor(ContextCompat.getColor(EventBrowsingActivity.this, R.color.accent_orange));
                         } else {
-                            tagText.setVisibility(View.GONE);
-                            otherTagsText.setText(event.tags);
-                            otherTagsText.setVisibility(View.VISIBLE);
+                            rsvpText.setText(R.string.status_not_joined);
+                            rsvpText.setTextColor(ContextCompat.getColor(EventBrowsingActivity.this, R.color.text_on_dark));
                         }
 
-                        tagsContainer.setVisibility(View.VISIBLE);
-                    } else {
-                        tagsContainer.setVisibility(View.GONE);
-                    }
-                }
+                        if (event.tags != null && !event.tags.trim().isEmpty()) {
+                            String matchingTags = getMatchingTags(event, userInterests);
+                            String nonMatchingTags = getNonMatchingTags(event, userInterests);
 
-                return view;
+                            if (!matchingTags.isEmpty()) {
+                                tagText.setText(getString(R.string.tags_matching_prefix, matchingTags));
+                                tagText.setTextColor(ContextCompat.getColor(EventBrowsingActivity.this, R.color.accent_orange));
+                                tagText.setVisibility(View.VISIBLE);
+
+                                if (!nonMatchingTags.isEmpty()) {
+                                    otherTagsText.setText(getString(R.string.tags_other_prefix, nonMatchingTags));
+                                    otherTagsText.setVisibility(View.VISIBLE);
+                                } else {
+                                    otherTagsText.setVisibility(View.GONE);
+                                }
+                            } else {
+                                tagText.setVisibility(View.GONE);
+                                otherTagsText.setText(event.tags);
+                                otherTagsText.setVisibility(View.VISIBLE);
+                            }
+
+                            tagsContainer.setVisibility(View.VISIBLE);
+                        } else {
+                            tagsContainer.setVisibility(View.GONE);
+                        }
+                    }
+
+                    return view;
+                } finally {
+                    Trace.endSection();
+                }
             }
         };
 
@@ -379,6 +401,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
         emptyStateText.setVisibility(View.GONE);
         eventsListView.setVisibility(View.GONE);
         swipeRefreshLayout.setVisibility(View.GONE);
+        filterInterestButton.setVisibility(View.GONE);
     }
 
     private void showErrorState() {
@@ -388,6 +411,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
         emptyStateText.setVisibility(View.GONE);
         eventsListView.setVisibility(View.GONE);
         swipeRefreshLayout.setVisibility(View.GONE);
+        filterInterestButton.setVisibility(View.GONE);
     }
 
     private void showEmptyState(String message) {
@@ -397,6 +421,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
         emptyStateText.setVisibility(View.VISIBLE);
         eventsListView.setVisibility(View.GONE);
         swipeRefreshLayout.setVisibility(View.GONE);
+        filterInterestButton.setVisibility(View.GONE);
     }
 
     private void showListState() {
@@ -405,6 +430,9 @@ public class EventBrowsingActivity extends AppCompatActivity {
         emptyStateText.setVisibility(View.GONE);
         eventsListView.setVisibility(View.VISIBLE);
         swipeRefreshLayout.setVisibility(View.VISIBLE);
+        if (!isGuest) {
+            filterInterestButton.setVisibility(View.VISIBLE);
+        }
     }
 
     private void showStyledMessage(String message) {

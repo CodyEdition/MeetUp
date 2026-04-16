@@ -79,39 +79,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cityTitleText" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/filterInterestButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/show_matching_interests"
+            android:textColor="@color/text_on_accent"
+            app:backgroundTint="@color/accent_orange"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cityTitleText" />
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@id/cityTitleText"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/filterInterestButton"
             app:layout_constraintBottom_toTopOf="@id/myRsvpButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <LinearLayout
+            <ListView
+                android:id="@+id/eventsListView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:background="@color/background_dark"
+                android:divider="@color/accent_light_orange"
+                android:dividerHeight="1dp" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/filterInterestButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="Show Matching Interests Only"
-                    android:textColor="@color/text_on_accent"
-                    app:backgroundTint="@color/accent_orange" />
-
-                <ListView
-                    android:id="@+id/eventsListView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/background_dark"
-                    android:divider="@color/accent_light_orange"
-                    android:dividerHeight="1dp" />
-
-            </LinearLayout>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -121,7 +118,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="32dp"
-            android:text="My RSVP Events"
+            android:text="@string/my_rsvp_events"
             android:textColor="@color/text_on_accent"
             app:backgroundTint="@color/accent_light_orange"
             app:layout_constraintBottom_toTopOf="@id/createEventButton"

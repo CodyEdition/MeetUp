@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.tracing.Trace;
 import androidx.recyclerview.widget.RecyclerView;
 
 final class CityWheelUiHelper {
@@ -22,26 +23,31 @@ final class CityWheelUiHelper {
     }
 
     static void applyWheelTransforms(RecyclerView recyclerView) {
-        int height = recyclerView.getHeight();
-        if (height <= 0) {
-            return;
-        }
-        int centerY = height / 2;
-        float maxDist = height / 2f;
-
-        for (int i = 0; i < recyclerView.getChildCount(); i++) {
-            View child = recyclerView.getChildAt(i);
-            TextView text = child.findViewById(R.id.cityNameText);
-            if (text == null) {
-                continue;
+        Trace.beginSection("CityWheel:applyWheelTransforms");
+        try {
+            int height = recyclerView.getHeight();
+            if (height <= 0) {
+                return;
             }
-            int childCenterY = (child.getTop() + child.getBottom()) / 2;
-            float dist = Math.abs(childCenterY - centerY);
-            float t = Math.min(1f, dist / maxDist);
-            float textSizeSp = TEXT_SIZE_CENTER_SP - t * (TEXT_SIZE_CENTER_SP - TEXT_SIZE_EDGE_SP);
-            float alpha = ALPHA_CENTER - t * (ALPHA_CENTER - ALPHA_EDGE);
-            text.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp);
-            text.setAlpha(alpha);
+            int centerY = height / 2;
+            float maxDist = height / 2f;
+
+            for (int i = 0; i < recyclerView.getChildCount(); i++) {
+                View child = recyclerView.getChildAt(i);
+                TextView text = child.findViewById(R.id.cityNameText);
+                if (text == null) {
+                    continue;
+                }
+                int childCenterY = (child.getTop() + child.getBottom()) / 2;
+                float dist = Math.abs(childCenterY - centerY);
+                float t = Math.min(1f, dist / maxDist);
+                float textSizeSp = TEXT_SIZE_CENTER_SP - t * (TEXT_SIZE_CENTER_SP - TEXT_SIZE_EDGE_SP);
+                float alpha = ALPHA_CENTER - t * (ALPHA_CENTER - ALPHA_EDGE);
+                text.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp);
+                text.setAlpha(alpha);
+            }
+        } finally {
+            Trace.endSection();
         }
     }
 

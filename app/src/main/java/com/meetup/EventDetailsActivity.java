@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.tracing.Trace;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
@@ -56,59 +57,64 @@ public class EventDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boolean isGuest = getIntent().getBooleanExtra(LoginActivity.EXTRA_IS_GUEST, false);
+        Trace.beginSection("EventDetailsActivity#onCreate");
+        try {
+            boolean isGuest = getIntent().getBooleanExtra(LoginActivity.EXTRA_IS_GUEST, false);
 
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_event_details);
-        SystemUiHelper.applyMeetUpSystemBars(this);
+            EdgeToEdge.enable(this);
+            setContentView(R.layout.activity_event_details);
+            SystemUiHelper.applyMeetUpSystemBars(this);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.eventDetailsRoot), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.eventDetailsRoot), (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
 
-        initViews();
+            initViews();
 
-        db = AppDatabase.getInstance(this);
+            db = AppDatabase.getInstance(this);
 
-        UserEntity currentUser = db.userDao().getCurrentUser();
-        if (currentUser != null && currentUser.interests != null) {
-            userInterests = currentUser.interests;
-        }
+            UserEntity currentUser = db.userDao().getCurrentUser();
+            if (currentUser != null && currentUser.interests != null) {
+                userInterests = currentUser.interests;
+            }
 
-        int eventId = getIntent().getIntExtra("event_id", -1);
-        if (eventId == -1) {
-            Toast.makeText(this, "Invalid event", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
+            int eventId = getIntent().getIntExtra("event_id", -1);
+            if (eventId == -1) {
+                Toast.makeText(this, "Invalid event", Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
 
-        Log.d(RSVP_DEBUG, "Opening EventDetailsActivity for event ID: " + eventId);
+            Log.d(RSVP_DEBUG, "Opening EventDetailsActivity for event ID: " + eventId);
 
-        event = db.eventDao().getEventById(eventId);
+            event = db.eventDao().getEventById(eventId);
 
-        if (event == null) {
-            Log.e(RSVP_DEBUG, "Event not found for event ID: " + eventId);
-            showEventNotFound();
-            return;
-        }
+            if (event == null) {
+                Log.e(RSVP_DEBUG, "Event not found for event ID: " + eventId);
+                showEventNotFound();
+                return;
+            }
 
-        populateEventDetails();
-        updateRsvpUi();
+            populateEventDetails();
+            updateRsvpUi();
 
-        addToCalendarButton.setOnClickListener(v -> addEventToCalendar());
+            addToCalendarButton.setOnClickListener(v -> addEventToCalendar());
 
-        if (isGuest) {
-            rsvpButton.setEnabled(true);
-            rsvpButton.setText("Guest Mode");
-            rsvpStatusText.setText(R.string.sign_in_to_rsvp);
+            if (isGuest) {
+                rsvpButton.setEnabled(true);
+                rsvpButton.setText("Guest Mode");
+                rsvpStatusText.setText(R.string.sign_in_to_rsvp);
 
-            rsvpButton.setOnClickListener(v ->
-                    showStyledMessage("Guest mode is active. Sign in to RSVP.")
-            );
-        } else {
-            rsvpButton.setOnClickListener(v -> handleRsvpClick());
+                rsvpButton.setOnClickListener(v ->
+                        showStyledMessage("Guest mode is active. Sign in to RSVP.")
+                );
+            } else {
+                rsvpButton.setOnClickListener(v -> handleRsvpClick());
+            }
+        } finally {
+            Trace.endSection();
         }
     }
 
