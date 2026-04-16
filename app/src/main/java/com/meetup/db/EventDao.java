@@ -7,7 +7,7 @@ import androidx.room.Query;
 import java.util.List;
 
 @Dao
-public interface EventDao { //replaces PlaceholderDao
+public interface EventDao {
 
     @Insert
     void insert(EventEntity event);
@@ -23,4 +23,7 @@ public interface EventDao { //replaces PlaceholderDao
 
     @Query("UPDATE events SET isRsvped = :isRsvped WHERE id = :eventId")
     void updateRsvpStatus(int eventId, boolean isRsvped);
+
+    @Query("SELECT * FROM events WHERE isRsvped = 1")
+    List<EventEntity> getRsvpedEvents();
 }

@@ -19,6 +19,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.meetup.db.AppDatabase;
 import com.meetup.db.EventEntity;
 
@@ -34,6 +35,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
     private TextView emptyStateText;
     private ListView eventsListView;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private TextView filterInterestButton;
 
     private AppDatabase db;
     private String selectedCity;
@@ -42,6 +44,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
 
     private boolean isGuest = false;
     private String userInterests = "";
+    private boolean filterByInterestOnly = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_event_browsing);
         SystemUiHelper.applyMeetUpSystemBars(this);
+
         isGuest = getIntent().getBooleanExtra(LoginActivity.EXTRA_IS_GUEST, false);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.eventBrowsingMain), (v, insets) -> {
@@ -57,19 +61,8 @@ public class EventBrowsingActivity extends AppCompatActivity {
             return insets;
         });
 
-        TextView cityTitleText = findViewById(R.id.cityTitleText);
-        loadingText = findViewById(R.id.loadingText);
-        errorText = findViewById(R.id.errorText);
-        emptyStateText = findViewById(R.id.emptyStateText);
-        eventsListView = findViewById(R.id.eventsListView);
-        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
-
-        swipeRefreshLayout.setColorSchemeResources(R.color.accent_orange);
-        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.background_dark);
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            Log.d(EVENT_DEBUG, "Swipe refresh triggered for city: " + selectedCity);
-            refreshEvents();
-        });
+        bindViews();
+        setupRefresh();
 
         db = AppDatabase.getInstance(this);
 
@@ -79,12 +72,77 @@ public class EventBrowsingActivity extends AppCompatActivity {
 
         selectedCity = getIntent().getStringExtra("selected_city");
         if (selectedCity == null || selectedCity.trim().isEmpty()) {
-            selectedCity = getString(R.string.unknown_city);
+            Toast.makeText(this, "City not selected. Returning to home.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
         }
 
+        TextView cityTitleText = findViewById(R.id.cityTitleText);
         cityTitleText.setText(getString(R.string.events_in_city, selectedCity));
 
-        adapter = new ArrayAdapter<>(this, 0, filteredEvents) {
+        if (isGuest) {
+            showStyledMessage("Guest mode is active. Sign in to RSVP or create events.");
+        }
+
+        setupFilterButton();
+        setupAdapter();
+        setupClickListeners();
+
+        seedSampleDataIfNeeded();
+        loadEvents();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(EVENT_DEBUG, "onResume triggered, reloading events for city: " + selectedCity);
+        loadEvents();
+    }
+
+    private void bindViews() {
+        loadingText = findViewById(R.id.loadingText);
+        errorText = findViewById(R.id.errorText);
+        emptyStateText = findViewById(R.id.emptyStateText);
+        eventsListView = findViewById(R.id.eventsListView);
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        filterInterestButton = findViewById(R.id.filterInterestButton);
+    }
+
+    private void setupRefresh() {
+        swipeRefreshLayout.setColorSchemeResources(R.color.accent_orange);
+        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.background_dark);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            Log.d(EVENT_DEBUG, "Swipe refresh triggered for city: " + selectedCity);
+            refreshEvents();
+        });
+    }
+
+    private void setupFilterButton() {
+        if (isGuest) {
+            filterInterestButton.setVisibility(View.GONE);
+            return;
+        }
+
+        filterInterestButton.setOnClickListener(v -> {
+            if (userInterests == null || userInterests.trim().isEmpty()) {
+                Toast.makeText(this, "No interests set in your profile.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            filterByInterestOnly = !filterByInterestOnly;
+
+            filterInterestButton.setText(
+                    filterByInterestOnly
+                            ? "Show All Events"
+                            : "Show Matching Interests Only"
+            );
+
+            loadEvents();
+        });
+    }
+
+    private void setupAdapter() {
+        adapter = new ArrayAdapter<EventEntity>(this, 0, filteredEvents) {
             @NonNull
             @Override
             public View getView(int position, View convertView, @NonNull ViewGroup parent) {
@@ -98,7 +156,6 @@ public class EventBrowsingActivity extends AppCompatActivity {
                 TextView titleText = view.findViewById(R.id.eventTitleItem);
                 TextView metaText = view.findViewById(R.id.eventMetaItem);
                 TextView rsvpText = view.findViewById(R.id.eventRsvpItem);
-
                 TextView tagText = view.findViewById(R.id.eventTagItem);
                 TextView otherTagsText = view.findViewById(R.id.eventOtherTagsItem);
                 View tagsContainer = view.findViewById(R.id.tagsContainer);
@@ -107,7 +164,6 @@ public class EventBrowsingActivity extends AppCompatActivity {
                     titleText.setText(event.title);
                     metaText.setText(getString(R.string.event_date_city, event.date, event.city));
 
-
                     if (event.isRsvped) {
                         rsvpText.setText(R.string.status_joined);
                         rsvpText.setTextColor(ContextCompat.getColor(EventBrowsingActivity.this, R.color.accent_orange));
@@ -115,7 +171,6 @@ public class EventBrowsingActivity extends AppCompatActivity {
                         rsvpText.setText(R.string.status_not_joined);
                         rsvpText.setTextColor(ContextCompat.getColor(EventBrowsingActivity.this, R.color.text_on_dark));
                     }
-
 
                     if (event.tags != null && !event.tags.trim().isEmpty()) {
                         String matchingTags = getMatchingTags(event, userInterests);
@@ -137,17 +192,21 @@ public class EventBrowsingActivity extends AppCompatActivity {
                             otherTagsText.setText(event.tags);
                             otherTagsText.setVisibility(View.VISIBLE);
                         }
+
                         tagsContainer.setVisibility(View.VISIBLE);
                     } else {
                         tagsContainer.setVisibility(View.GONE);
                     }
                 }
+
                 return view;
             }
         };
 
         eventsListView.setAdapter(adapter);
+    }
 
+    private void setupClickListeners() {
         eventsListView.setOnItemClickListener((parent, view, position, id) -> {
             EventEntity selectedEvent = filteredEvents.get(position);
 
@@ -163,10 +222,17 @@ public class EventBrowsingActivity extends AppCompatActivity {
             refreshEvents();
         });
 
+        View myRsvpButton = findViewById(R.id.myRsvpButton);
+        myRsvpButton.setOnClickListener(v -> {
+            Intent intent = new Intent(EventBrowsingActivity.this, MyRsvpEventsActivity.class);
+            intent.putExtra(LoginActivity.EXTRA_IS_GUEST, isGuest);
+            startActivity(intent);
+        });
+
         View createButton = findViewById(R.id.createEventButton);
         createButton.setOnClickListener(v -> {
             if (isGuest) {
-                Toast.makeText(this, R.string.guest_cannot_create_events, Toast.LENGTH_SHORT).show();
+                showStyledMessage("Guest mode is active. Sign in to create events.");
                 return;
             }
 
@@ -179,16 +245,6 @@ public class EventBrowsingActivity extends AppCompatActivity {
         if (isGuest) {
             createButton.setVisibility(View.GONE);
         }
-
-        seedSampleDataIfNeeded();
-        loadEvents();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(EVENT_DEBUG, "onResume triggered, reloading events for city: " + selectedCity);
-        loadEvents();
     }
 
     private void seedSampleDataIfNeeded() {
@@ -206,6 +262,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
                     false,
                     "Tech, Networking"
             ));
+
             db.eventDao().insert(new EventEntity(
                     "Startup Pitch Night",
                     "Pitch your startup idea",
@@ -256,18 +313,8 @@ public class EventBrowsingActivity extends AppCompatActivity {
         }
     }
 
-
     private void loadEvents() {
         showLoadingState();
-        doLoadEvents();
-    }
-
-    private void refreshEvents() {
-        showListState();
-        doLoadEvents();
-    }
-
-    private void doLoadEvents() {
         Log.d(EVENT_DEBUG, "Loading events for city: " + selectedCity);
 
         try {
@@ -275,39 +322,54 @@ public class EventBrowsingActivity extends AppCompatActivity {
 
             List<EventEntity> events = db.eventDao().getEventsByCity(selectedCity);
 
+            if (events == null || events.isEmpty()) {
+                Log.d(EVENT_DEBUG, "No events found for city: " + selectedCity);
+                adapter.notifyDataSetChanged();
+                showEmptyState("No events found in " + selectedCity);
+                Toast.makeText(this, "No events available", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             events.sort((e1, e2) -> {
                 boolean e1Matches = matchesUserInterests(e1, userInterests);
                 boolean e2Matches = matchesUserInterests(e2, userInterests);
 
-                if (e1Matches != e2Matches) {
-                    return e1Matches ? -1 : 1;
+                if (e1Matches == e2Matches) {
+                    return 0;
                 }
-                
-                // Secondary sort by date 
-                String date1 = e1.date != null ? e1.date : "";
-                String date2 = e2.date != null ? e2.date : "";
-                return date1.compareTo(date2);
+                return e1Matches ? -1 : 1;
             });
 
-            if (events == null || events.isEmpty()) {
-                Log.d(EVENT_DEBUG, "No events found for city: " + selectedCity);
-                adapter.notifyDataSetChanged();
-                showEmptyState();
-                return;
+            if (filterByInterestOnly) {
+                for (EventEntity event : events) {
+                    if (matchesUserInterests(event, userInterests)) {
+                        filteredEvents.add(event);
+                    }
+                }
+
+                if (filteredEvents.isEmpty()) {
+                    adapter.notifyDataSetChanged();
+                    showEmptyState("No events match your interests in this city.");
+                    return;
+                }
+            } else {
+                filteredEvents.addAll(events);
             }
 
-            filteredEvents.addAll(events);
-            Log.d(EVENT_DEBUG, "Events found: " + filteredEvents.size());
-
+            Log.d(EVENT_DEBUG, "Events shown: " + filteredEvents.size());
             adapter.notifyDataSetChanged();
             showListState();
 
         } catch (Exception e) {
             Log.e(EVENT_DEBUG, "Error loading events", e);
+            Toast.makeText(this, "Error loading events", Toast.LENGTH_SHORT).show();
             showErrorState();
-        } finally {
-            swipeRefreshLayout.setRefreshing(false);
         }
+    }
+
+    private void refreshEvents() {
+        loadEvents();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private void showLoadingState() {
@@ -315,6 +377,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
         loadingText.setVisibility(View.VISIBLE);
         errorText.setVisibility(View.GONE);
         emptyStateText.setVisibility(View.GONE);
+        eventsListView.setVisibility(View.GONE);
         swipeRefreshLayout.setVisibility(View.GONE);
     }
 
@@ -323,14 +386,16 @@ public class EventBrowsingActivity extends AppCompatActivity {
         errorText.setText(R.string.something_went_wrong);
         errorText.setVisibility(View.VISIBLE);
         emptyStateText.setVisibility(View.GONE);
+        eventsListView.setVisibility(View.GONE);
         swipeRefreshLayout.setVisibility(View.GONE);
     }
 
-    private void showEmptyState() {
+    private void showEmptyState(String message) {
         loadingText.setVisibility(View.GONE);
         errorText.setVisibility(View.GONE);
-        emptyStateText.setText(R.string.no_events);
+        emptyStateText.setText(message);
         emptyStateText.setVisibility(View.VISIBLE);
+        eventsListView.setVisibility(View.GONE);
         swipeRefreshLayout.setVisibility(View.GONE);
     }
 
@@ -338,8 +403,18 @@ public class EventBrowsingActivity extends AppCompatActivity {
         loadingText.setVisibility(View.GONE);
         errorText.setVisibility(View.GONE);
         emptyStateText.setVisibility(View.GONE);
+        eventsListView.setVisibility(View.VISIBLE);
         swipeRefreshLayout.setVisibility(View.VISIBLE);
     }
+
+    private void showStyledMessage(String message) {
+        View rootView = findViewById(R.id.eventBrowsingMain);
+        Snackbar snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG);
+        snackbar.setBackgroundTint(ContextCompat.getColor(this, R.color.accent_orange));
+        snackbar.setTextColor(ContextCompat.getColor(this, R.color.background_dark));
+        snackbar.show();
+    }
+
     private boolean matchesUserInterests(EventEntity event, String userInterests) {
         if (event == null || event.tags == null || event.tags.trim().isEmpty()) {
             return false;

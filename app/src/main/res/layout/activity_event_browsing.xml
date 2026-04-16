@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:background="@color/background_dark">
 
-    <!-- Grain -->
     <com.meetup.views.GrainOverlayView
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -18,108 +17,131 @@
         android:layout_height="match_parent"
         android:padding="16dp">
 
-    <!-- Title -->
-    <TextView
-        android:id="@+id/cityTitleText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        tools:text="Events in Ottawa"
-        android:textAlignment="center"
-        android:textColor="@color/accent_orange"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/cityTitleText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textAlignment="center"
+            android:textColor="@color/accent_orange"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            tools:text="Events in Ottawa"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Refresh Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/reloadButton"
-        style="@style/Widget.Material3.Button.IconButton.Filled"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginEnd="8dp"
-        android:contentDescription="@string/refresh"
-        app:backgroundTint="@color/accent_orange"
-        app:icon="@drawable/ic_refresh"
-        app:iconGravity="textStart"
-        app:iconPadding="0dp"
-        app:iconSize="18dp"
-        app:layout_constraintBottom_toBottomOf="@id/cityTitleText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/cityTitleText" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/reloadButton"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/refresh"
+            app:backgroundTint="@color/accent_orange"
+            app:icon="@drawable/ic_refresh"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="18dp"
+            app:layout_constraintBottom_toBottomOf="@id/cityTitleText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/cityTitleText" />
 
-    <!-- Loading -->
-    <TextView
-        android:id="@+id/loadingText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/loading_events"
-        android:textColor="@color/text_on_dark"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/cityTitleText"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/loadingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/loading_events"
+            android:textColor="@color/text_on_dark"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cityTitleText" />
 
-    <!-- Error -->
-    <TextView
-        android:id="@+id/errorText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/error"
-        android:textColor="@color/text_on_dark"
-        android:visibility="gone"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/cityTitleText"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/errorText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/error"
+            android:textColor="@color/text_on_dark"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cityTitleText" />
 
-    <!-- Empty State -->
-    <TextView
-        android:id="@+id/emptyStateText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/no_events_found"
-        android:textColor="@color/text_on_dark"
-        android:visibility="gone"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/cityTitleText"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/emptyStateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/no_events_found"
+            android:textColor="@color/text_on_dark"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cityTitleText" />
 
-    <!-- Swipe Refresh -->
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/cityTitleText"
-        app:layout_constraintBottom_toTopOf="@id/createEventButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/cityTitleText"
+            app:layout_constraintBottom_toTopOf="@id/myRsvpButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-        <ListView
-            android:id="@+id/eventsListView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@color/accent_light_orange"
-            android:dividerHeight="1dp"
-            android:background="@color/background_dark" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/filterInterestButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Show Matching Interests Only"
+                    android:textColor="@color/text_on_accent"
+                    app:backgroundTint="@color/accent_orange" />
 
-    <!-- Create Event Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/createEventButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="20dp"
-        android:text="@string/create_event"
-        android:textColor="@color/text_on_accent"
-        app:backgroundTint="@color/accent_orange"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+                <ListView
+                    android:id="@+id/eventsListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/background_dark"
+                    android:divider="@color/accent_light_orange"
+                    android:dividerHeight="1dp" />
+
+            </LinearLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/myRsvpButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="32dp"
+            android:text="My RSVP Events"
+            android:textColor="@color/text_on_accent"
+            app:backgroundTint="@color/accent_light_orange"
+            app:layout_constraintBottom_toTopOf="@id/createEventButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/createEventButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/create_event"
+            android:textColor="@color/text_on_accent"
+            app:backgroundTint="@color/accent_orange"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
