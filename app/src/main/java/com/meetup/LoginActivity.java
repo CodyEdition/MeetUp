@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(new Intent(this, MainActivity.class));
                         finish();
                     } else {
-                        String message = task.getException() != null ? task.getException().getMessage() : "Unknown error";
+                        String message = task.getException() != null ? task.getException().getMessage() : getString(R.string.unknown_error);
                         Snackbar.make(findViewById(android.R.id.content), getString(R.string.login_failed, message), Snackbar.LENGTH_LONG).show();
                     }
                 });
