@@ -189,7 +189,7 @@ public class CreateEventActivity extends AppCompatActivity {
 
         amPmPicker.setMinValue(0);
         amPmPicker.setMaxValue(1);
-        amPmPicker.setDisplayedValues(new String[]{"AM", "PM"});
+        amPmPicker.setDisplayedValues(new String[]{getString(R.string.am_label), getString(R.string.pm_label)});
 
         Calendar now = Calendar.getInstance();
         int currentHour = now.get(Calendar.HOUR_OF_DAY);
@@ -208,7 +208,7 @@ public class CreateEventActivity extends AppCompatActivity {
                     selectedHour = (hour % 12) + (amPm == 1 ? 12 : 0);
                     selectedMinute = minute;
 
-                    String time = String.format(Locale.getDefault(), "%02d:%02d %s", hour, minute, amPm == 0 ? "AM" : "PM");
+                    String time = String.format(Locale.getDefault(), "%02d:%02d %s", hour, minute, amPm == 0 ? getString(R.string.am_label) : getString(R.string.pm_label));
                     eventTimeEditText.setText(time);
                     eventTimeLayout.setError(null);
                 })
@@ -346,7 +346,7 @@ public class CreateEventActivity extends AppCompatActivity {
         }
 
         new AlertDialog.Builder(this)
-                .setTitle("Select Interest Tags")
+                .setTitle(R.string.select_interest_tags_title)
                 .setMultiChoiceItems(tagsArray, checkedItems, (dialog, which, isChecked) -> {
                     if (isChecked) {
                         if (!selectedTags.contains(tagsArray[which])) {
@@ -356,18 +356,14 @@ public class CreateEventActivity extends AppCompatActivity {
                         selectedTags.remove(tagsArray[which]);
                     }
                 })
-                .setPositiveButton("OK", null)
+                .setPositiveButton(R.string.ok, null)
                 .show();
     }
     private void seedDefaultTagsIfNeeded() {
         if (db.interestTagDao().getAllTags().isEmpty()) {
-            db.interestTagDao().insertTag(new InterestTagEntity("Tech"));
-            db.interestTagDao().insertTag(new InterestTagEntity("Music"));
-            db.interestTagDao().insertTag(new InterestTagEntity("Art"));
-            db.interestTagDao().insertTag(new InterestTagEntity("Food"));
-            db.interestTagDao().insertTag(new InterestTagEntity("Sports"));
-            db.interestTagDao().insertTag(new InterestTagEntity("Networking"));
-            db.interestTagDao().insertTag(new InterestTagEntity("Culture"));
+            for (String tag : getResources().getStringArray(R.array.default_interest_tags)) {
+                db.interestTagDao().insertTag(new InterestTagEntity(tag));
+            }
         }
     }
     private void loadAvailableTagsFromDb() {
