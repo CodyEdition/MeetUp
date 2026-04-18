@@ -86,29 +86,52 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void loadUserData() {
-        currentUser = db.userDao().getCurrentUser();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        currentUser = db.userDao().getCurrentUser();
 
         if (firebaseUser != null) {
             originalEmail = firebaseUser.getEmail();
             emailEditText.setText(originalEmail);
+
+            // Restore local Room user if missing
+            if (currentUser == null) {
+                UserEntity restoredUser = new UserEntity(
+                        firebaseUser.getUid(),
+                        firebaseUser.getEmail(),
+                        true
+                );
+
+                db.userDao().insertOrUpdateUser(restoredUser);
+                currentUser = db.userDao().getCurrentUser();
+            }
         }
 
         if (currentUser != null) {
-            displayNameEditText.setText(currentUser.displayName != null ? currentUser.displayName : "");
-            bioEditText.setText(currentUser.bio != null ? currentUser.bio : "");
-        }
+            displayNameEditText.setText(
+                    currentUser.displayName != null ? currentUser.displayName : ""
+            );
 
-        updateAvatarInitials();
+            bioEditText.setText(
+                    currentUser.bio != null ? currentUser.bio : ""
+            );
 
-        if (currentUser != null && currentUser.interests != null && !currentUser.interests.isEmpty()) {
-            String[] saved = currentUser.interests.split(",");
-            selectedInterests.clear();
-            Collections.addAll(selectedInterests, saved);
-            interestsText.setText(String.join(", ", selectedInterests));
+            if (currentUser.interests != null && !currentUser.interests.isEmpty()) {
+                String[] saved = currentUser.interests.split(",");
+                selectedInterests.clear();
+
+                for (String interest : saved) {
+                    selectedInterests.add(interest.trim());
+                }
+
+                interestsText.setText(String.join(", ", selectedInterests));
+            } else {
+                interestsText.setText(R.string.no_interests_selected);
+            }
         } else {
             interestsText.setText(R.string.no_interests_selected);
         }
+
+        updateAvatarInitials();
     }
 
     private void updateAvatarInitials() {
