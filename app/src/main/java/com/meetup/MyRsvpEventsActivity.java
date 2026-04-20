@@ -16,7 +16,9 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.meetup.db.AppDatabase;
 import com.meetup.db.EventEntity;
@@ -28,6 +30,8 @@ public class MyRsvpEventsActivity extends AppCompatActivity {
 
     private TextView emptyStateText;
     private ListView rsvpEventsListView;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private MaterialButton reloadButton;
 
     private AppDatabase db;
     private final List<EventEntity> rsvpedEvents = new ArrayList<>();
@@ -52,6 +56,10 @@ public class MyRsvpEventsActivity extends AppCompatActivity {
 
         emptyStateText = findViewById(R.id.emptyStateText);
         rsvpEventsListView = findViewById(R.id.rsvpEventsListView);
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        reloadButton = findViewById(R.id.reloadButton);
+
+        findViewById(R.id.backButton).setOnClickListener(v -> finish());
 
         db = AppDatabase.getInstance(this);
 
@@ -60,8 +68,20 @@ public class MyRsvpEventsActivity extends AppCompatActivity {
             emptyStateText.setText(R.string.my_rsvpd_events_sign_in_required);
             emptyStateText.setVisibility(View.VISIBLE);
             rsvpEventsListView.setVisibility(View.GONE);
+            swipeRefreshLayout.setEnabled(false);
+            reloadButton.setVisibility(View.GONE);
             return;
         }
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.accent_orange);
+        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.background_dark);
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            loadRsvpedEvents();
+            swipeRefreshLayout.setRefreshing(false);
+        });
+
+        reloadButton.setOnClickListener(v -> loadRsvpedEvents());
 
         setupAdapter();
         loadRsvpedEvents();

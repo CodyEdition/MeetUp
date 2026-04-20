@@ -201,4 +201,14 @@
     </string-array>
     <string name="am_label">AM</string>
     <string name="pm_label">PM</string>
+    <string name="welcome_tagline">Find your people.</string>
+    <string name="welcome_title">Welcome to Meet Up</string>
+    <string name="welcome_subtitle">Your local hub for meeting people and joining events that match what you love.</string>
+    <string name="feature_browse_title">Browse city hubs</string>
+    <string name="feature_browse_desc">Discover events happening in your city, right now.</string>
+    <string name="feature_rsvp_title">RSVP in one tap</string>
+    <string name="feature_rsvp_desc">Save your spot and keep track of what you have joined.</string>
+    <string name="feature_create_title">Host your own</string>
+    <string name="feature_create_desc">Create events and bring people together around what you care about.</string>
+    <string name="get_started">Get Started</string>
 </resources>
