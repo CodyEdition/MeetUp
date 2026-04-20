@@ -15,4 +15,16 @@
 
     <dimen name="lined_paper_tags_line_step">40dp</dimen>
     <dimen name="lined_paper_tags_first_rule">56dp</dimen>
+
+    <dimen name="profile_content_padding">20dp</dimen>
+    <dimen name="profile_avatar_size">96dp</dimen>
+    <dimen name="profile_avatar_top_margin">24dp</dimen>
+    <dimen name="profile_form_top_margin">24dp</dimen>
+    <dimen name="profile_button_horizontal_margin">20dp</dimen>
+    <dimen name="profile_select_interests_top_margin">20dp</dimen>
+    <dimen name="profile_add_interest_top_margin">12dp</dimen>
+    <dimen name="profile_change_password_top_margin">12dp</dimen>
+    <dimen name="profile_save_button_horizontal_margin">20dp</dimen>
+    <dimen name="profile_save_button_bottom_margin">24dp</dimen>
+    <dimen name="profile_scroll_bottom_padding">112dp</dimen>
 </resources>

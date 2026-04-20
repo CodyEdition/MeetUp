@@ -3,6 +3,7 @@ package com.meetup;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +25,6 @@ import com.meetup.db.InterestTagEntity;
 import com.meetup.db.UserEntity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -42,10 +42,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private final List<String> availableTags = new ArrayList<>();
     private final List<String> selectedInterests = new ArrayList<>();
-    private TextView interestsText;;
-
-
-
+    private TextView interestsText;
 
 
     @Override
@@ -59,12 +56,21 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         interestsText = findViewById(R.id.interestsText);
+        View saveButton = findViewById(R.id.saveButton);
+        final int baseSaveButtonBottomMargin =
+                ((ViewGroup.MarginLayoutParams) saveButton.getLayoutParams()).bottomMargin;
 
         findViewById(R.id.selectInterestsButton).setOnClickListener(v -> showInterestDialog());
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.profileRoot), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            int baseBottomPadding = getResources().getDimensionPixelSize(R.dimen.profile_scroll_bottom_padding);
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, baseBottomPadding + systemBars.bottom);
+
+            ViewGroup.MarginLayoutParams saveButtonLayoutParams =
+                    (ViewGroup.MarginLayoutParams) saveButton.getLayoutParams();
+            saveButtonLayoutParams.bottomMargin = baseSaveButtonBottomMargin + systemBars.bottom;
+            saveButton.setLayoutParams(saveButtonLayoutParams);
             return insets;
         });
 
@@ -325,13 +331,11 @@ public class ProfileActivity extends AppCompatActivity {
                         selectedInterests.remove(tagsArray[which]);
                     }
                 })
-                .setPositiveButton(R.string.ok, (dialog, which) -> {
-                    interestsText.setText(
-                            selectedInterests.isEmpty()
-                                    ? getString(R.string.no_interests_selected)
-                                    : String.join(", ", selectedInterests)
-                    );
-                })
+                .setPositiveButton(R.string.ok, (dialog, which) -> interestsText.setText(
+                        selectedInterests.isEmpty()
+                                ? getString(R.string.no_interests_selected)
+                                : String.join(", ", selectedInterests)
+                ))
                 .show();
     }
     private void seedDefaultTagsIfNeeded() {
@@ -386,9 +390,7 @@ public class ProfileActivity extends AppCompatActivity {
                     }
 
                     interestsText.setText(
-                            selectedInterests.isEmpty()
-                                    ? getString(R.string.no_interests_selected)
-                                    : String.join(", ", selectedInterests)
+                            String.join(", ", selectedInterests)
                     );
 
                     Toast.makeText(this, R.string.custom_interest_added, Toast.LENGTH_SHORT).show();
