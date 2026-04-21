@@ -8,6 +8,7 @@ public class EventEntityTest {
 
     @Test
     public void eventCreation_storesValuesCorrectly() {
+        // Arrange & Act
         EventEntity event = new EventEntity(
                 "Tech Talk", 
                 "A discussion about AI", 
@@ -20,6 +21,7 @@ public class EventEntityTest {
                 "AI,Technology"
         );
 
+        // Assert
         assertEquals("Tech Talk", event.title);
         assertEquals("A discussion about AI", event.description);
         assertEquals("Ottawa", event.city);
@@ -33,8 +35,10 @@ public class EventEntityTest {
 
     @Test
     public void eventIgnoreConstructor_setsDefaultValues() {
+        // Testing the partial constructor
         EventEntity event = new EventEntity("Simple Meeting", "Desc", "Toronto", "2026-12-01");
         
+        // Verify optional fields are defaulted to empty or zero
         assertEquals("Simple Meeting", event.title);
         assertEquals("Toronto", event.city);
         assertEquals("", event.time);
