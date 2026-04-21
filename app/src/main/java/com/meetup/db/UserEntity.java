@@ -1,6 +1,7 @@
 package com.meetup.db;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "users")
@@ -14,9 +15,13 @@ public class UserEntity {
     public String lastSelectedCity;
     public String displayName;
     public String bio;
-
     public String interests;
 
+    public UserEntity() {
+        // Required empty constructor for Room
+    }
+
+    @Ignore
     public UserEntity(String userId, String email, boolean isLoggedIn) {
         this.userId = userId;
         this.email = email;
